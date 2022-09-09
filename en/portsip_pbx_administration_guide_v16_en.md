@@ -18,7 +18,7 @@ PortSIP reserves the right to make changes without prior notice.
 
 ## Trademarks
 
- ![](..\images\25.png)
+ ![](../images/25.png)
 
 PortSIP®, the PortSIP logo and the names and marks associated with PortSIP products are trademarks and/or service marks of PortSIP Solutions, Inc. and are registered and/or common law marks in the United States and various other countries. All other trademarks are property of their respective owners. No portion hereof may be reproduced or transmitted in any form or by any means, for any purpose other than the recipient's personal use, without the express written permission of PortSIP.
 
@@ -96,7 +96,7 @@ comprehensive suite of services addressing both business and consumer needs. The
 
 ## 1 Architecture
 
- ![](..\images\pbx_diagram_v16.drawio.png)
+ ![](../images/pbx_diagram_v16.drawio.png)
 
 ## 2 Install PortSIP PBX
 
@@ -185,7 +185,7 @@ Now you can use `https://66.175.221.120:8883` to access the PBX Web portal, the 
 
 After the PortSIP PBX has been installed successfully, use your browser to access the web portal at https://66.175.221.120:8887. The sign-in page looks like the one in the screenshot below.
 
- ![PortSIP PBX Web Portal](..\images\web_portal.png)
+ ![PortSIP PBX Web Portal](../images/web_portal.png)
 
  Just sign in by enter the username and password both are `admin`， leave the domain as blank.
 
@@ -200,7 +200,7 @@ The IP address entered here is the SIP server IP address for PBX. It is required
 !!! Informtion
     If the PBX is located on the cloud, both of the `private IPv4` and `public IPv4` should be entered here. If located in LAN, just enter the `private IPv4` only.
 
-![PortSIP PBX Setup Wizard Step 1](..\images\setup_wizard_1.png)
+![PortSIP PBX Setup Wizard Step 1](../images/setup_wizard_1.png)
 
 #### 2.2.2 Setup Wizard 2: Certificate File
 
@@ -231,7 +231,7 @@ Now you have two certificate files:
   
 Now enter the `mypbx.com` for `Web Domain` field; clean the `Certificate File` filed and use the Winows Notepad to open `portsip.pem` file, copy all contents and paste to `Certificate File` filed; clean the `Private Key` filed, and use the Winows Notepad to open `portsip.key` file, copy all contents and paste to `Private Key` filed.
 
-![PortSIP PBX Setup Wizard Step 2](..\images\setup_wizard_2.png)
+![PortSIP PBX Setup Wizard Step 2](../images/setup_wizard_2.png)
 
 #### 2.2.3 Setup Wizard 3: Transport Protocol
 
@@ -244,7 +244,7 @@ By default, the transport ports are:
 
 You can feel free to change the default port to a new port which you prefer, but the port should be not used by other applications.
 
-![PortSIP PBX Setup Wizard Step 3](..\images\setup_wizard_3.png)
+![PortSIP PBX Setup Wizard Step 3](../images/setup_wizard_3.png)
 
 !!! Warning
     Once you added the transport, you have to chagne the firewall rule to allow the transport port. The client app, IP Phone will reach to PBX by the transport and port.
