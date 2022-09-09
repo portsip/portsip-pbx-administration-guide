@@ -96,6 +96,70 @@ comprehensive suite of services addressing both business and consumer needs. The
 
 ## 1 Architecture
 
- ![](../images/pbx_diagram_v16.drawio.png)
+ ![](..\images\pbx_diagram_v16.drawio.png)
 
- 
+## 2 Install PortSIP PBX
+
+### 2.1 Install PortSIP PBX for Linux
+
+#### Supported Linux OS
+
+- CentOS: 7.9
+- Ubuntu: 18.04, 20.04, 22.04
+- Debian: 10.x, 11.x
+
+It only supports 64bit OS.
+
+#### Preparing the Linux Host Machine for Installation
+
+Tasks that MUST be completed before installing PortSIP PBX.
+
+- If the Linux on which PBX will be installed is located in LAN, assign a `static LAN IP address`; if it's in a public network, please assign a `static IP address` for the public network.
+- Install all available updates & service packs before installing PortSIP PBX.
+- Do not install PostgreSQL on your PortSIP PBX Server.
+- Ensure that all power-saving options for your System and Network adapters are disabled (by setting the system to High Performance).
+- Do not install TeamViewer, VPN, and other similar software on the host machine.
+- PortSIP PBX must not be installed on a host which is a DNS or DHCP server.
+- Below ports must be permitted by your firewall.
+  - UDP: 5060, 25000 - 35000, 45000 – 65000
+  - TCP: 5065, 8883, 8885, 8887, 8888
+    Please also ensure the above ports have not been used by other applications.
+- Ensure server date-time is synced correctly
+- Must execute all Linux commands by the root user, please su root first.
+
+!!! Warning
+    If the PBX running on a cloud platform such as AWS, and the cloud platform has the firewall itself, you MUST open the ports on the cloud platform firewall too.
+
+#### Step 1 Download installation scripts
+
+Execute the below commands.
+
+```shell
+mkdir /opt/portsip && cd /opt/portsip
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_pbx_docker.sh     -o  install_pbx_docker.sh
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_pbx_ctl.sh        -o  portsip_pbx_ctl.sh
+```
+
+### Step 2 Setup the docker environment
+
+Execute the below command to install the `Docker-Compose` environment.
+
+```shell
+/bin/sh install_pbx_docker.sh
+```
+
+### Step 3 Create and run the PortSIP PBX docker container instance
+
+The below command is used to create and run the PBX on a server which the IP is `66.175.221.120`.
+
+```shell
+/bin/sh portsip_pbx_ctl.sh run -p /var/lib/portsip -a 66.175.221.120 -i portsip/pbx:16
+```
+
+If run the PBX in a LAN without public IP, just replace the `66.175.221.120` by private IP of the PBX server,.
+
+Now you can use `https://66.175.221.120:8887` or `https://66.175.221.120:8888` to access the PBX Web portal, the default system administrator name and password both are `admin`.
+
+### Step 3 Setup the PortSIP SBC
+
+PortSIP also provide a SBC that support 
