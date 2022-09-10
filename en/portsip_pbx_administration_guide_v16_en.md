@@ -337,30 +337,32 @@ Portal. Click on `Add` to create a new one, or select an existing extension and 
 
 In this section of `User`, you can enter the `username` and `password`, please note, this is just for the web portal accessing.
 
-In the `Role` list box, the user can grant permissions by choose a role, the `User` role means normal extension; The `Admin` role means this user is also have tenant administrator role, have the premissions to manage the tenant by sign in web port. There allows create more than one administrator for a tenant.
+The user can grant permissions by selecting a role from the `Role` list box; the `User` role indicates that the user has typical extension access; the `Admin` role indicates that the user is a tenant administrator and can manage the tenant via the web port.
 
-The `Email` filed is required, since the PBX will need to send the notifiy email to user's email.
+The PortSIP PBX allows add more than one administrator to a tenant.
+
+The `Email` field is mandatory since the PBX will need to send the notification email to the user's email address.
 
 The `Display Name` is the full name of the user, likes `James Bond`.
 
 #### General
 
-In the section of `General`, you can enter the extension number, password. The extension number can be numerals or letters; the extension number and password are required. A welcome email with information on the extension created, as well as voicemail will be sent to the user's email address.
+The extension number and password are mandatory fields that must be filled in under the `General`.
 
-If the SMTP server of tenant is configured, once an extension is successfully created and the its email is set, PortSIP PBX will send an email to the extension's email which includes the extension information and PBX parameters such as PBX SIP Domain, PBX IP, and the QR code. User can use the PortSIP UC App to scan the QR code to register to PBX without enter the details.
+If the tenant's SMTP server is configured, once an extension is successfully create, a welcome email will be sent to the user's email address with details about the newly created extension details and PBX parameters such as PBX SIP Domain, PBX IP, and the QR code. The PortSIP UC App may be used to scan the QR code and register to the PBX without entering any details.
 
-There is a QR code for this extension, you can use PortSIP App to scan the QR code to sign in the PBX rather than entering the information manually.
+There is a QR code for this extension; instead of entering the information manually, you can use the PortSIP App to scan the QR code to sign in to the PBX.
 
-In the `Outbound Caller ID` section, you can select a DID base the trunk and trunk DID pool for the extension, once the extension makes outbound call to a trunk, the `Outbound Caller ID` will be present in the INVITE SIP message.
+You can select a DID from the trunk and trunk DID pool for the extension in the `Outbound Caller ID` section; when the extension makes an outbound call to a trunk, the `Outbound Caller ID` will be presents in the `From` header of the INVITE SIP message.
 
-As the below screenshot, when the call is via trunk 1, the outbound caller ID `22000` will be used, and the outbound caller ID `88010` will be used if the call is over the trunk 2.
+As shown in the screenshot below, if the call is made over trunk 1, the `Outbound Caller ID` will be `22000`, and if it is made over trunk 2, the `Outbound Caller ID` is `88010`.
 
 ![Outbound Caller ID for Extension](../images/extension_cli.png)
 
-- Record audio calls: if this option is enabled, the PBX will record this extension audio calls. If the call is for video, the PBX will only record it as an audio file.
-- Record video calls: if this option is enabled, if this extension make audio call, the call will be recorded as an audio file, and will record the video call as a video file(MP4).
-- Always make outbound anonymous calls: once this option is enabled, the `anonymous` will be set as the user part of `From`, `P-Asserted-Identity`, and `P-Preferred-Identity` headers in the `INVITE` message when make call to trunk.  
-- Always delivery outbound caller ID: if this option is enabled, the `Outbound Caller ID` will be always set as user part of the `From` header in the INVITE which sent to the trunk.
+- Record audio calls: If this option is selected, any audio calls of this extension will be recorded as audio files.
+- Record video calls: If this option is selected, any audio calls of this extension will be recorded as audio files, and any video calls will be recorded as video files (MP4).
+- Always make outbound anonymous calls: When this option is enabled, the user part of the `From`, `P-Asserted-Identity`, and `P-Preferred-Identity` headers in the `INVITE` message sent to the trunk will be set to `anonymous`.
+- Always delivery outbound caller ID: If you enable this option, the `Outbound Caller ID` will always be set as the user part of the `From` header in the INVITE delivered to the trunk.
 
 #### Forwarding Rule
 
@@ -376,17 +378,15 @@ Each status requires a call-forwarding rule. For example, if the user is unable 
 
 The forwarding rules have the below optional values.
 
-- Forward to voicemail: the call will be forwarded to the voicemail service in order to let the caller leave a voice message. There allows to choose an extension nubmer for the voicemail box. For example, choose extension 108, the voicemail will be saved into the 108's mailbox; Leave it as empty the voicemail will be saved into the extensioin itself maibox.
-- Forward to number: allows to enter a number then the call will be forwared to this number, the nubmer can be an extension number or a PSTN phoen number.
-- Hangup: the call will be hangup by PBX.
+- Forward to voicemail: The call will be routed to the voicemail service so that the caller can leave a voice message. There is an option to select an extension number for the voicemail box. For example, if you select extension 108, the voicemail will be saved in the 108's mailbox; if you leave it blank, the voicemail will be saved in the extension's own mailbox.
+- Forward to number: permits you to enter a number and then forward the call to that number; the number can be an extension number or a PSTN phone number.
+- Hangup: The call will be terminated by the PBX.
 - Ring anyway: send the call to this extension anyway.
-- Exceptions: create exceptions by entering the `Caller ID`, selecting the time frame in
-`Received During` and choose the action in `Action` to bypass the extension forward rules.
+- Exceptions: create exceptions by entering the `Caller ID`, selecting the time frame in `Received During` and choose the action in `Action` to bypass the extension forward rules.
 
 #### Voicemail
 
-The `Voicemail` tab allows you to configure the extension’s voice mail preferences (including the voicemail PIN number for authentication), enable/disable PIN Authentication, and enable PortSIP PBX to read out the Date/Time on which the
-message was received.
+The `Voicemail` page allows you to specify the extension's voice mail preferences (including the voicemail PIN number for authentication), enable/disable PIN Authentication, and enable PortSIP PBX to read out the message's Date/Time.
 
 In the `Greetings for Voicemail` section allows you to configure your voicemail greetings.
 
@@ -397,9 +397,9 @@ Click the `+` button to upload the new greeting file, and click the `Lock` icon 
 The Office Hours Scheduling feature allows a user’s status to be changed on the base of
 global office hours or specific office hours.
 
-Select if the extension would follow the Global Office Hours, or use Specific Office Hours. To specify Specific Office Hours, chose the `Use specific Office Hours` option,  then you can create multiple office hours for every day.
+Choose whether the extension will use to `Global Office Hours` or `Specific Office Hours`. Select the `Use Specific Office Hours` option to set specific office hours, and there allows create different office hours for each day.
 
-The time frame `00:00 - 23:59` means whole day is office hours, and `00:00 - 00:00` means whole day is closed.
+The time frame `00:00 - 23:59` indicates that the entire day is open for business, whereas `00:00 - 00:00` indicates that the entire day is closed.
 
 #### Phone Provisioning
 
@@ -425,5 +425,5 @@ The following options are available for BLFs.
 
 #### Balance
 
-The tenant administrator can set the balance for an extension. When billing is enabled and the balance is not enough the call will fails.
+The balance for an extension can be specified by the tenant administrator. When billing is enabled, the call will fail if the balance is insufficient.
 
