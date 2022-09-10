@@ -197,8 +197,8 @@ Enter the Public IPv4 if you have a static public IP of your LAN. Do not enter t
 Note: the loopback interface (127.0.0.1) is unacceptable. Only the static IP for LAN where the PBX is located is allowed (do not use DHCP dynamic IP). This private IP must be reachable by your SIP client.
 The IP address entered here is the SIP server IP address for PBX. It is required when a SIP client or IP phone registers to PortSIP PBX should be configured as the `Outbound Proxy Server`.
 
-!!! Informtion
-    If the PBX is located on the cloud, both of the `private IPv4` and `public IPv4` should be entered here. If located in LAN, just enter the `private IPv4` only.
+> **Note**
+> If the PBX is located on the cloud, both of the `private IPv4` and `public IPv4` should be entered here. If located in LAN, just enter the `private IPv4` only.
 
 ![PortSIP PBX Setup Wizard Step 1](../images/setup_wizard_1.png)
 
@@ -246,8 +246,8 @@ You can feel free to change the default port to a new port which you prefer, but
 
 ![PortSIP PBX Setup Wizard Step 3](../images/setup_wizard_3.png)
 
-!!! Warning
-    Once you added the transport, you have to chagne the firewall rule to allow the transport port. The client app, IP Phone will reach to PBX by the transport and port.
+> **Warning**
+> Once you added the transport, you have to chagne the firewall rule to allow the transport port. The client app, IP Phone will reach to PBX by the transport and port.
 
 ## 3 PBX Management
 
