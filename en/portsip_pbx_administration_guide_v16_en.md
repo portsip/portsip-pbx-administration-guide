@@ -128,7 +128,7 @@ Tasks that MUST be completed before installing PortSIP PBX.
 - Ensure server date-time is synced correctly
 - Must execute all Linux commands by the root user, please su root first.
 
-> [!WARNING]
+> **Warning**
 > If the PBX running on a cloud platform such as AWS, and the cloud platform has the firewall itself, you MUST open the ports on the cloud platform firewall too.
 
 #### Step 1 Download installation scripts
