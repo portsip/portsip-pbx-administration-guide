@@ -8,6 +8,12 @@ Copyright ©2022, PortSIP Solutions, Inc. All rights reserved. No part of this d
 > **Warning**
 > This is a note
 
+> **Information**
+> This is a note
+
+> **Note**
+> This is a note
+
 ## Copyright Notice
 
 Copyright© 2022 PortSIP Solutions, Inc.
