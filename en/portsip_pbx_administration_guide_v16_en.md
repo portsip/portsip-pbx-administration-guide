@@ -3,8 +3,7 @@
 Version: v16.0.0
 Date: Sep 5, 2022
 
-Copyright ©2022, PortSIP Solutions, Inc. All rights reserved. No part of this document may be reproduced, translated into another language or format, or transmitted in any form or by any means, electronic or mechanical, for any purpose, without the express written permission of PortSIP Solutions, Inc.
-
+[toc]
 
 ## Copyright Notice
 
@@ -95,13 +94,114 @@ comprehensive suite of services addressing both business and consumer needs. The
 - Free Client VoIP SDK
 - Free Client apps
 
+## Before Started
+
+### Prerequisite Knowledge for Linux
+
+Deploying PortSIP PBX in a Linux environment requires planning and knowledge of session
+initiation protocol (SIP) audio, video call and presence, Instant Messaging (IM) administration.
+
+You should also have knowledge of the following Linux infrastructures:
+A popular Linux distribution:
+
+- CentOS 7.9 (64-bit)
+- Debian 10.x (64-bit)
+- Ubuntu 18.04 or 20.04 (64-bit)
+- Docker 20.10 or higher
+- IPv4/IPv6
+- Systemd
+- IP tables
+- Firewalld
+- HTTP
+
+This document assumes that the Linux OS is already depoyed and administrators of PortSIP
+PBX have been allocated with the root permission to Linux.
+
+### Prerequisite knowledge for Windows
+
+Deploying PortSIP PBX in a Windows environment requires planning and knowledge of
+session initiation protocol (SIP) audio, video call and presence, Instant Messaging (IM)
+administration. You should also have knowledge of the following Windows infrastructures:
+
+A Windows desktop or Windows server OS:
+
+- Windows 10/11 (64-bit)
+- Windows Server 2012/2016/2019/2020/2022
+- IPv4/IPv6
+- Windows firewall
+
+This document assumes that the Windows OS is already deployed and administrators of
+PortSIP PBX have been allocated with the administrator permission to Windows.
+
+### Cloud and Virtualization Environment Supported
+
+To build high-availability communication solution to help clients reducing cost and improving communication performance, PortSIP PBX commits support on cloud services and have confirmed compatibility with following cloud and virtualized environment:
+
+- VMware ESX 5.X and above.
+- Linux HyperV
+- Microsoft HyperV 2012 R2 and above
+- Microsoft AZURE
+- Amazon AWS
+- Google Could
+- Digital Ocean
+- ALI Cloud
+
+### System performance depends on following key factors
+
+- Maximum simultaneous calls needed for PBX
+- Maximum online users needed for PBX
+- Recordings for calls
+- Recording audio only or both of audio and video
+- Maximum online users for audio/video conferences on PBX
+- Maximum IVRs (Virtual Receptionist) on PBX
+- Maximum Call Queues on PBX
+- Maximum Ring Groups on PBX
+
+Depending on the key features listed above, PortSIP PBX is able to run on PCs and servers with various CPUs ranging from Intel i3 CPUs to Xeon.
+
+### Other Requirements
+
+- Latest Firefox, Google Chrome, Edge browser
+- Microsoft .NET Framework version 4.5 or higher
+- Knowledge of Linux and Linux Internet administration
+- Knowledge of Windows and Windows Internet administration
+- A constant Internet connection to stun4.l.google.com on port 19302
+- Ensure server date time is synced correctly.
+
+### FQDN Support
+
+Although PortSIP PBX is designed to be able to run on servers without FQDN specified, we
+recommend to specify FQGN with following advantages:
+
+- Easier access to Web Portal for PortSIP PBX
+- Easier management of IP phones and clients after IP address change for PBX
+- Convenient access to HTTPS when accessing Web Portal
+- Avoid browser warning when access the WebRTC Client
+
+The FQDN you are using must be able to be resolved correctly into the server with PortSIP PBX installed in LAN. If PortSIP PBX is installed on public network, FQDN must be resolved correctly into the public network address for server with PBX installed.
+
+### Getting Help and Support Resources
+
+[Official PortSIP Support Community](https://forum.portsip.com/)
+[PortSIP Knowledge Base](https://www.portsip.com/knowledge-base/)
+[Submit a request](https://portsip.zendesk.com/hc/en-us/requests/new)
+[Email support](mailto:support@portsip.com)
+
 ## 1 Architecture
 
- ![](../images/pbx_diagram_v16.drawio.png)
+![PortSIP PBX Architecture](../images/pbx_diagram_v16.drawio.png)
 
-## 2 Install PortSIP PBX
+## 2 Installation of PortSIP PBX
 
-### 2.1 Install PortSIP PBX and SBC for Linux
+### 2.1 Downloading PortSIP PBX
+
+The latest free edition of PortSIP PBX could always be found and downloaded at [PortSIP Website]([https://www.portsip.com](https://www.portsip.com/)). It’s available for both 64-bit Windows and Linux, but not for 32-bit version.
+
+The free edition of PortSIP PBX offers a maximum of 3 simultaneous calls and 10 extension registrations. If you require more simultaneous calls/extensions, please refer to [License Section](#11.10 License) for more details.
+
+You will get the installer after download completed.
+
+### 2.2 Installing PortSIP PBX on Linux
 
 #### Supported Linux OS
 
@@ -141,7 +241,7 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/insta
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_pbx_ctl.sh        -o  portsip_pbx_ctl.sh
 ```
 
-### Step 2 Setup the docker environment
+#### Step 2 Setup the docker environment
 
 Execute the below command to install the `Docker-Compose` environment.
 
@@ -180,11 +280,75 @@ The below command is used to create and run the SBC on the PBX server together.
 /bin/sh portsip_sbc_ctl.sh run -p /data/portsip -i portsip/sbc:10
 ```
 
-Now you can use `https://66.175.221.120:8883` to access the PBX Web portal, the default system administrator name and password both are `admin`.
+You also need to open the port that you are using for adding new transport:
 
-### 2.2 Configue PortSIP PBX
+- Assume you have added a TLS transport on port 5063, you must open TCP port 5063 in your Linux Firewalld.
+- Assume you have added a TCP transport on port 5061, you must open TCP port 5061 in your Linux Firewalld.
+- Assume you have added a UDP transport on port 5068, you must open UDP port 5068 in your Linux Firewalld.
 
-After the PortSIP PBX has been installed successfully, use your browser to access the web portal at https://66.175.221.120:8887. The sign-in page looks like the one in the screenshot below.
+> **Warning**
+> If the PBX running on a cloud platform such as AWS, and the cloud platform has the firewall itself, you MUST open the new transport port on the cloud platform firewall too.
+
+### 2.3 Installing PortSIP PBX on Windows
+
+#### Preparing the Windows Host Machine for Installation
+
+Tasks that MUST be completed before installing PortSIP PBX.
+
+- If the Windows PC / server on which PBX will be installed is located in LAN, assign a static LAN IP address; if it's in public network, assign a static IP address for public network.
+- Install all available Windows updates & service packs before installing PortSIP PBX. The reboot after installing Windows updates may reveal additional updates. Pay particular attention to install all updates for Microsoft .Net before running the PortSIP PBX installation.
+- Anti-virus Software should not scan the following directories to avoid complications and write access delays: `C:\Program Files\PortSIP`; `C:\Programdata\PortSIP`
+- Do not install VPN, TeamViewer software on your PortSIP PBX Server
+- Do not install `PostgreSQL` on your PortSIP PBX Server
+- Ensure the `**Windows Firewall**` service has been started.
+- Ensure that all power saving options for your System and Network adapters are disabled (by setting the system to High Performance).
+- Disable Bluetooth adapters if it is a Windows client PC.
+- PortSIP PBX must not be installed on a host which is a DNS or DHCP server, or that has MS SharePoint or Exchange services installed.
+- Below ports must be permitted by your firewall.
+  - UDP: 5060, 25000 - 35000, 45000 – 65000
+  - TCP: 5065, 8883, 8885, 8887, 8888
+    Please also ensure the above ports have not been used by other applications.
+- Ensure server date-time is synced correctly
+- Ensure your Windows Firewall is enabled
+
+> **Warning**
+> If you running the PBX on the cloud platform such as AWS, and the cloud platform has the firewall itself, you MUST open the ports on the cloud platform firewall too.
+
+#### Installing a fresh PortSIP PBXfor Windows
+
+To install PortSIP PBX, you only need to double-click the installer, which will guide you through the installation process.
+
+PortSIP PBX services will automatically start after successful installation (and there after every time your computer starts up).
+
+> **Warning**
+> During installation, when you choose the folders for the PBX, below two folders must not same!!
+
+![PortSIP PBX Directory](../images/pbx_setup_select_directory.png)
+
+#### Configuring Windows Firewall Rules
+
+After having successfully installed PortSIP PBX, the PortSIP PBX ports has been opened with Linux firewall.
+
+If your server has a firewall which is blocking the ports, you must open the below ports in order to make the PortSIP PBX working properly.
+
+- Below ports must be permitted by your firewall.
+  - UDP: 5060, 25000 - 35000, 45000 – 65000
+  - TCP: 5065, 8883, 8885, 8887, 8888
+    Please also ensure the above ports have not been used by other applications.
+
+You also need to open the port that you are using for adding new transport:
+
+- Assume you have added a TLS transport on port 5063, you must open TCP port 5063 in your Windows Firewall.
+- Assume you have added a TCP transport on port 5061, you must open TCP port 5061 in yourWindows Firewall.
+- Assume you have added a UDP transport on port 5068, you must open UDP port 5068 in your Windows Firewall.
+
+> **Warning**
+> If the PBX running on a cloud platform such as AWS, and the cloud platform has the firewall itself, you MUST open the new transport port on the cloud platform firewall too.
+
+
+## 2 Configue PortSIP PBX
+
+After the PortSIP PBX has been installed successfully, use your browser to access the web portal at <https://66.175.221.120:8887>. The sign-in page looks like the one in the screenshot below.
 
  ![PortSIP PBX Web Portal](../images/web_portal.png)
 
@@ -192,7 +356,7 @@ After the PortSIP PBX has been installed successfully, use your browser to acces
 
  After singed in the web portal, the `Setup Wizard` will pop ups automtically if you are not completed it yet, some settings must be configred in order to make the PBX works.
 
-#### 2.2.1 Setup Wizard 1: Network Environment
+### 2.1 Setup Wizard 1: Network Environment
 
 Enter the Public IPv4 if you have a static public IP of your LAN. Do not enter the Public IPv4 if your public IP is dynamic.
 Note: the loopback interface (127.0.0.1) is unacceptable. Only the static IP for LAN where the PBX is located is allowed (do not use DHCP dynamic IP). This private IP must be reachable by your SIP client.
@@ -203,7 +367,7 @@ The IP address entered here is the SIP server IP address for PBX. It is required
 
 ![PortSIP PBX Setup Wizard Step 1](../images/setup_wizard_1.png)
 
-#### 2.2.2 Setup Wizard 2: Certificate File
+### 2.2 Setup Wizard 2: Certificate File
 
 In order to support TLS transport for SIP, and provide HTTPS access for the Web Portal and REST API, we must have a trusted SSL certificate and upload to PBX in this step.
 
@@ -213,7 +377,7 @@ You will also need to purchase a trusted SSL certificate for this domain to avoi
 
 If you don't have the domain or certificate, you can simply enter the PBX IP as the Web Domain, and accept the default certificate here. By the default, the PortSIP PBX use a self-sigend certificate, it will cause the browser to block connection and pop ups the warning informaiton.
 
-##### Purchase SSL certificate
+#### Purchase SSL certificate
 
 You can follow below steps if you would like to purchase certificate files from a trusted provider (assume purchased certificate for domain mypbx.com):
 
@@ -234,7 +398,7 @@ Now enter the `mypbx.com` for `Web Domain` field; clean the `Certificate File` f
 
 ![PortSIP PBX Setup Wizard Step 2](../images/setup_wizard_2.png)
 
-#### 2.2.3 Setup Wizard 3: Transport Protocol
+### 2.3 Setup Wizard 3: Transport Protocol
 
 You can set transport layer protocol for the SIP signaling by clicking the `Add` buton.
 By default, the transport ports are:
@@ -248,7 +412,7 @@ You can feel free to change the default port to a new port which you prefer, but
 ![PortSIP PBX Setup Wizard Step 3](../images/setup_wizard_3.png)
 
 > **Warning**
-> Once you added the transport, you have to chagne the firewall rule to allow the transport port. The client app, IP Phone will reach to PBX by the transport and port.
+> Once a new transport was added, you have to change the firewall rule to allow the transport port. The client app, IP Phone will reach to PBX by the transport and port.
 
 ## 3 PBX Management
 
@@ -258,14 +422,14 @@ After completing the Configuration Wizard, you may manage PortSIP PBX in the Web
 
 PortSIP PBX is designed as Multi-Tenant, which means one PortSIP PBX installation can work for multiple enterprise (companies) by creating more than one tenants, and each tenant will be able to have their own PBX system.
 
-#### 3.1.1 Creating Tenant
+### 3.2 Creating Tenant
 
 To create a new tenant, select the left menu `Tenants` and click the `Add`.
 When creating a tenant, you can specify the tenant profile details such as `Name`,
 `sip domain`, `office hours` and `Storage`. A tenant profile can be modified after tenant admin signing into the Web Portal.
 You can also limit the resource the tenant uses by clicking the `Options` tab. The `Capability` section under this tab allows you to set the maximum extensions, maximum concurrent calls, maximum ring groups etc.
 
-##### In the `General` tab allows to set below parameters
+The `General` page allows to adjust the below features.
 
 - Name: The name for identify that tenant, for example `TenantA`.
 - SIP Domain: The SIP domain for this tenant, it should be unique, the extensions of this tenant SIP URI should be: `sip:xxx@domain.com`.
@@ -279,7 +443,7 @@ another PC/mobile phone will be invalid.
 - Allow extension to create temporary meeting: If selected, the extensions of
 this tenant will be able to create temporary meetings via REST API.
 
-##### In the `Options` tab allows to set below parameters
+The `Options` page allows to adjust the below features.
 
 - Country: The country for the tenant
 - Timezone: The timezone for the tenant
@@ -304,23 +468,23 @@ The `Storage` tab allows to adjust the storage quota for Recording files, Voice 
 
 You can set the way of deleting old recording files and voice mails in `Auto cleaning` section.
 
-#### 3.1.2 Deactivating Tenant
+### 3.3 Deactivating Tenant
 
 To deactivate an existing tenant, select the left menu `Tenants`, and all tenants will be listed. Click the ON/OFF button in the `Status` column to deactive/activate that tenant.
 
-#### 3.1.3 Deleting Tenant
+### 3.4 Deleting Tenant
 
 To deactivate an existing tenant, select the left menu `Tenants`, and all tenants will be listed. Select a tenant then click the `Delete` button to delete it.
 
-#### 3.1.4 Managing Tenant
+### 3.5 Managing Tenant
 
 PortSIP allows System administrator to manage tenant and its settings including extension users.
 Todo this, please go to Web Portal, navigate to `Tenant` menu, select a tenant to be managed and click `Manage` button, now system admin may setup or modify the settings for the tenant and manage its extensions.
 Once completed, user may click profile picture on the top right of page to display the menu and choose `Switch to Administrator` to switch back to system administrator, without the need to logout of tenant account and re-login to administrator account.
 
-### 3.2 Phone Device Management
+## 4 Phone Device Management
 
-### 3.3 Extension Management
+## 5 Extension Management
 
 This section explains how to create and configure extensions in PortSIP PBX. There are
 multiple methods to create an extension.
@@ -333,7 +497,7 @@ multiple methods to create an extension.
 To configure an extension, click on `Call Manager > Extensions` in the PortSIP PBX Web
 Portal. Click on `Add` to create a new one, or select an existing extension and click the `Edit` button to configure or manage the existing extension users.
 
-#### User
+### 5.1 User
 
 In this section of `User`, you can enter the `username` and `password`, please note, this is just for the web portal accessing.
 
@@ -345,7 +509,7 @@ The `Email` field is mandatory since the PBX will need to send the notification 
 
 The `Display Name` is the full name of the user, likes `James Bond`.
 
-#### General
+### 5.2 General
 
 The extension number and password are mandatory fields that must be filled in under the `General`.
 
@@ -364,7 +528,7 @@ As shown in the screenshot below, if the call is made over trunk 1, the `Outboun
 - Always make outbound anonymous calls: When this option is enabled, the user part of the `From`, `P-Asserted-Identity`, and `P-Preferred-Identity` headers in the `INVITE` message sent to the trunk will be set to `anonymous`.
 - Always delivery outbound caller ID: If you enable this option, the `Outbound Caller ID` will always be set as the user part of the `From` header in the INVITE delivered to the trunk.
 
-#### Forwarding Rule
+### 5.3 Forwarding Rule
 
 Each extension can have a set of call forwarding rules that define what PortSIP PBX should do when the extension user is unable to answer an incoming call. This can be configured on the basis of following:
 
@@ -384,7 +548,7 @@ The forwarding rules have the below optional values.
 - Ring anyway: send the call to this extension anyway.
 - Exceptions: create exceptions by entering the `Caller ID`, selecting the time frame in `Received During` and choose the action in `Action` to bypass the extension forward rules.
 
-#### Voicemail
+### 5.4 Voicemail
 
 The `Voicemail` page allows you to specify the extension's voice mail preferences (including the voicemail PIN number for authentication), enable/disable PIN Authentication, and enable PortSIP PBX to read out the message's Date/Time.
 
@@ -392,7 +556,7 @@ In the `Greetings for Voicemail` section allows you to configure your voicemail 
 
 Click the `+` button to upload the new greeting file, and click the `Lock` icon to specify it as greeting file.
 
-#### Office Hours
+### 5.5 Office Hours
 
 The Office Hours Scheduling feature allows a user’s status to be changed on the base of
 global office hours or specific office hours.
@@ -401,12 +565,12 @@ Choose whether the extension will use to `Global Office Hours` or `Specific Offi
 
 The time frame `00:00 - 23:59` indicates that the entire day is open for business, whereas `00:00 - 00:00` indicates that the entire day is closed.
 
-#### Phone Provisioning
+### 5.6 Phone Provisioning
 
 The `Phone Provisioning` tab allows you to add or edit settings of phones linked to this
 extension. The management of IP phone settings is discussed in section `3.2 Phone Device Management`.
 
-#### BLF
+### 5.7 BLF
 
 You can configure the BLF lights on an IP Phone in this tab.
 
@@ -423,7 +587,69 @@ The following options are available for BLFs.
 - Custom Speed Dial
 - Change Status
 
-#### Balance
+### 5.8 Balance
 
 The balance for an extension can be specified by the tenant administrator. When billing is enabled, the call will fail if the balance is insufficient.
 
+## 6 Transport Management
+
+After completing the Setup Wizard, you may manage PortSIP PBX in the Web Portal.
+
+PortSIP PBX supports a wide range of transports, including UDP, TCP, TLS for SIP message. You need to configure the transport, and set the ports to use when
+listening for SIP messages.
+
+> **Note**
+> Only administrator are allowed to create or delete SIP transport. When deleting, at least one transport must be left around.
+
+The default transport has been configured with `Setup Wizard`. To make changes, you need
+to signed in the PBX Web Portal as `System Admin` role and select the `Call Manager > Transport` menu, click `Add` button in `Transports` section.
+
+> **Warning**
+> Once added a new transport, you have to change the firewall rule to allow that transport port. The client app, IP Phone will reach to PBX by the transport and port.
+
+### 6.1 Add UDP/TCP transport
+
+To add UDP/TCP transport:
+
+- Click the `Add` button, choose the UDP/TCP in `Transport protocol` box. The default Transport Port for UDP/TCP is 5060/5063. You may specify another port as you like, but the port must not be in use by other applications
+- Click the `Apply` button to add the transport
+
+### 6.2 Add TLS transport
+
+First of all, prepare the certificate files. Please refer to the [Purchase SSL certificate](#22-setup-wizard-2-certificate-file).
+
+You can follow below steps to purchase a certificate files from a trusted third-party provider for your PBX `Web Domain` (assume purchased certificate for a domain mypbx.com).
+
+- Click `Add` button and choose the TLS in `Transport protocol` box. The default Transport Port for TLS 5063. You may specify another port as you like, but the port must not be in use by other applications
+- Click the `Apply` button to add the transport
+
+## 7 Trunk Management
+
+VoIP service providers host phone lines and replace the traditional telco lines to provide the trunk service. Providers can assign local numbers in one or more cities or countries and route these to your. In most cases they also support number porting.
+
+Service providers are able to offer better call rates because they may have an international network or have negotiated better rates. Therefore, using VoIP providers can reduce call costs.
+
+PortSIP PBX supports these trunk types.
+
+- Register Based: this trunk require the PBX to register with the trunk by using an authentication ID and password.
+`System Admin` can configure a `Register Based` trunk and assign it to tenants, as well as assign a DID Pool to each tenant.
+`Tenant Admin` can also configure a `Register Based` trunk, however this turnk cannot be shared with other tenants, and its hostname and authentication ID cannot be the same as those of other trunks.
+- Accept Register: The trunk register to PBX with the predefined authentication ID and password.
+- `System Admin` can configure an `Accept Register` trunk and assign it to tenants, as well as assign a DID Pool to each tenant.
+`Tenant Admin` can also configure an `Accept Register` trunk, however this turnk cannot be shared with other tenants, and its hostname and authentication ID cannot be the same as those of other trunks.
+- IP Based: IP Based trunk does not generally require the PBX to register with the trunk. The IP address of the PBX needs to be configured on the trunk side, so that it knows where calls to your number should be routed.
+The `IP based` trunk can only be configured by `System Admin`, and an IP-based trunk can only be added once. If the `System Admin` wishes to allow more than one tenant to use this trunk, the `System Admin` can assign this trunk to the tenants and assign each tenant a DID Pool.
+- Teams: Set up the Microsoft Teams as a trunk in the PortSIP PBX.
+This Teams trunk can only be configured by the `Teant Admin` and cannot be shared with other tenants.
+
+The `Tenant Admin` has the ability to view all trunks that the `System Admin` allocated to him and create the inbound/outbound rule on its basis, but he cannot change such trunks.
+
+### 7.1 Configuring Trunk
+
+First, you need to have an account with a VoIP service provider. PortSIP PBX supports most of the popular SIP-based VoIP service providers.
+
+![Add a new trunk](../images/turnk_1.png)
+
+After you got the trunk account from the VoIP service provider, you will need to configure the account in PortSIP PBX.
+
+1. Select `Call Manager > Trunks`  menu, click the arrow button to chosoe  Enter a friendly name for this VoIP provider
