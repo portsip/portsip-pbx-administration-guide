@@ -551,7 +551,7 @@ Each status requires a call-forwarding rule. For example, if the user is unable 
 The forwarding rules have the below optional values.
 
 - Forward to voicemail: The call will be routed to the voicemail service so that the caller can leave a voice message. There is an option to select an extension number for the voicemail box. For example, if you select extension 108, the voicemail will be saved in the 108's mailbox; if you leave it blank, the voicemail will be saved in the extension's own mailbox.
-- Forward to number: permits you to enter a number and then forward the call to that number; the number can be an extension number or a PSTN phone number.
+- Forward to number: permits you to enter a number and then forward the call to that number; the number can be an extension number or system extension number(ring group, virtual receptionist, meeting number, queue number) or a PSTN phone number.
 - Hangup: The call will be terminated by the PBX.
 - Ring anyway: send the call to this extension anyway.
 - Exceptions: create exceptions by entering the `Caller ID`, selecting the time frame in `Received During` and choose the action in `Action` to bypass the extension forward rules.
@@ -640,10 +640,10 @@ Service providers are able to offer better call rates because they may have an i
 PortSIP PBX supports these trunk types.
 
 - Register Based: this trunk require the PBX to register with the trunk by using an authentication ID and password.
-`System Admin` can configure a `Register Based` trunk and assign it to tenants, as well as assign a DID Pool to each tenant.
+`System Admin` can configure a `Register Based` trunk and assign it to tenants, as well as assign a DID Pool to each tenant. The tenants share this trunk but have different DID pool.
 `Tenant Admin` can also configure a `Register Based` trunk, however this turnk cannot be shared with other tenants, and its hostname and authentication ID cannot be the same as those of other trunks.
 - Accept Register: The trunk register to PBX with the predefined authentication ID and password.
-- `System Admin` can configure an `Accept Register` trunk and assign it to tenants, as well as assign a DID Pool to each tenant.
+`System Admin` can configure an `Accept Register` trunk and assign it to tenants, as well as assign a DID Pool to each tenant.
 `Tenant Admin` can also configure an `Accept Register` trunk, however this turnk cannot be shared with other tenants, and its hostname and authentication ID cannot be the same as those of other trunks.
 - IP Based: IP Based trunk does not generally require the PBX to register with the trunk. The IP address of the PBX needs to be configured on the trunk side, so that it knows where calls to your number should be routed.
 The `IP based` trunk can only be configured by `System Admin`, and an IP-based trunk can only be added once. If the `System Admin` wishes to allow more than one tenant to use this trunk, the `System Admin` can assign this trunk to the tenants and assign each tenant a DID Pool.
@@ -764,3 +764,82 @@ Click the `Next` button to set up more parameters.
 3. Other settings are the same as the previous section for confining the "**IP Based**" and "**Register Based**" VoIP provider/Trunk.
 4. After successfully added the trunk, now you can configure the E1/T1 gateway to let it register to the could PortSIP PBX.
 In the E1/T1 settings, set up the trunk "**Host Domain or IP**" as "**SIP Domain/SIP Server**", in case is **portsiptrunk1.io**; set up the cloud PBX public static IP as "**Outbound Proxy Server**"，set up the PortSIP PBX transport port as the "**Outbound Proxy Server port**", set up the trunk "**Authorization name**" and "**Password**" as the "**username/auth ID/auth name**" and "**password**", then the E1/T1 gateway can register to cloud PortSIP PBX.
+
+### 7.2 Outbound parameters and Inbound parameters
+
+After completing the setup for trunk, you could also go to “**Call Manager > Trunks**” and select a trunk, click the "**Edit**" button to change the Inbound/Outbound Parameters for trunk.
+
+- In "**Outbound Parameters**" page, you could set some rules to make changes for headers of INVITE messages to be sent to trunk. For example, "**user**" of "**From**" SIP header could be set to "**Outbound Caller ID**" of the extension who starts the call. You can setup the “**Outbound caller ID**” of extension in the “**General**” page of extension, see section [5.2 General](#52-general).
+- In "**Inbound Parameters**" page, user could set rules to make changes to field values of SIP messages for incoming call which from trunk.
+
+> **Note**
+> Both inbound and outbound parameters are advanced options. It’s recommended to use default values.
+
+## 8 Call Route Management
+
+Outbound and inbound rules determines how PortSIP PBX routes calls on the base of certain criteria. You can configure rules to control through which trunk a call will be placed, for example, to route the calls through your trunk on the basis of least cost routing.
+
+You can also set DID (Direct Inward Dialing) numbers to allow to bypass the receptionist or IVR and place calls directly to a user’s extension.
+
+### 8.1 Creating Inbound Rules
+
+Many companies provide users and/or departments with "**Direct or DID numbers**", which allow their contacts to bypass the receptionist and make calls directly. DID numbers is also referred to as DDI numbers in the United Kingdom and MSN numbers in Germany.
+
+Even if you make use of a virtual receptionist, a direct line/number is often preferable because it’s more convenient for the caller.
+
+Direct dial numbers are easily implemented by using "**Inbound Rules**". DID numbers is provided by your trunk provider or Phone Company and are virtual numbers assigned to your physical lines. Usually you are assigned a range of numbers. Please ask your Phone Company or trunk provider for more information about DID numbers.
+
+You have to configure at least one trunk before adding the inbound rules.
+
+To add Inbound Rule:
+
+1. Sign in the PortSIP PBX Web Portal by **System Admin** credentials, and click the menu **Tenants**, select a tenant then click button **Manage** to manage this tenant to configure the inbound rule. or sign a user who has the `Tenant Admin` permssion into the Web Portal to manage that tenant.
+2. From the Web Portal, select "**Call Manager > Inbound Rules**", click the "**Add**" button.
+3. Enter a friendly name for the rule
+4. **CID Number Mask**: you can enter the CID number mask here,  which the PBX will use to identify the caller. You can add the number in it’s entirety, identifying a single caller, or use the \* as a wildcard. For example `0044**********` will identify a UK Caller and `004420********` will identify a caller from London. Note: the `*` digits must matched number actually digits. If the number is 3 digits, then should use `***`.
+   - The CID number mask also allow set a number range, for example: 00442012345670-00442012345680.
+   - The CID number mask can be empty
+5. In the trunk box, select which trunk you wish to be associated with this DID and inbound rule, only allow assign one provider with an inbound rule.
+6. In the "**DID/DDI Number Mask**" field, enter the DID number as it will appear in the SIP "**To**" header (The number your trunk provider has been applied as your main, or first, DID number). PortSIP PBX will match the number inserted into this field with the "**To**" header of the `SIP INVITE` message which is trunk sends to PBX
+   - The DID number can be a single number likes 00442012345678
+   - The DID number can be serial numbers range, for example: 003325261000-003325262000.
+   - The single DID number or serial numbers range must in the trunk DID pool range.
+7. Specify how you wish to forward incoming calls according to this inbound rule.
+   - Forward to number: permits you to enter a number and then forward the call to that number; the number can be an extension number or system extension number(ring group, virtual receptionist, meeting number, queue number) or a PSTN phone number.
+   The number can also be a range, for example: 2000-3000. If set **Forward to number** as a range, this range must be serial numbers, and the DID Number Mask also must be a number range and both ranges size must be equaled.
+   - Forward to voicemail: The call will be routed to the voicemail service so that the caller can leave a voice message. There is an option to select an extension number for the voicemail box. For example, if you select extension 108, the voicemail will be saved in the 108's mailbox; if you leave it blank, the voicemail will be saved in the extension's own mailbox.
+   - Hangup: The call will be terminated by the PBX.
+  side office hours
+8. You can specify that an incoming call should be forwarded differently if it is received out
+9. you can set an inbound rule to routes a bulk DID numbers to a builk extensions.
+
+#### Office hours for Inbound Rules
+
+In the "**Office Hours**" page, you can set the office hours for the inbound rule so that the incoming calls will be routed to different destinations on the basis of the current hour.
+
+If "**Use default Global Office Hours**" is selected, the PBX will use the office hours specified by `Tenant Admin`;
+
+If "**Use specific Office Hours**" is selected, customized office hours rules apply instead.
+
+#### Advanced Topic: skill routing
+
+You can create multiple inbound rules based on a same DID number, but all these inbound rules should must the CID number mask, and the CID number mask must not be conflicted.
+
+**Example**:  You have a DID number `442012345670`. Now create two inbound rules: the CID for the first rule is set to `0044**********`, the DID number mask set to `00442012345670`, and the call is set to route to the **call queue 8000**; the CID for the second rule is set to `0033*********`, the DID number mask set to `00442012345670`, and the call is set to route to the **call queue 9000**.
+
+Now let all English-speaking employees to be agent of **call queue 8000**, let all French-speaking employees to be agent of **call queue 9000**. When the caller calls to `00442012345670`, callers from UK will be routed to the **call queue 8000** to talk with English agent, and callers from France will be routed to the **call queue 9000** to talk with French agent.
+
+#### Advanced Topic: route bulk numbers to bulk extensions
+
+If you are a large company have 1000 employees, and you purchased 1000 DID numbers  from the trunk service provider. These DID numbers are serdial nubmers. You wish to give each emploee a DID number then your clients can reach them by dial their DID number. But this is almost a impossible mission - need to create 1000 inbound rules to route the 1000 DID numbers to 1000 extensions(each employee is an extension).
+
+PortSIP PBX provide a great feature that allows you just create one inbound rule to implement your purpose.
+
+Assume the DID numbers are `0012012345001-0012012346000`, and the employees extension numbers are `1001-2000`.
+
+1. Create an inbound rule, set the DID Number Mask to `0012012345001-0012012346000`.
+2. Confiture the call route destination to `1001-2000`
+
+If someone dials `0012012345001`, the call will be routed to extension `1001`, and dials `0012012345005` the call will be routed to extension `1005`.
+
+![Inbound Rule](../images/inbound_rule_1.png)
