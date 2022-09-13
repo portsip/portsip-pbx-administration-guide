@@ -675,8 +675,11 @@ Tenant A, for example, adds a trunk of the `trunk provider XYZ` and sets the DID
 The DID pool allows the single number or a number range as the below.
 
 - 1000-2000
-- 0282556000-0282556900
+- 282556000-282556900
 - 101;203;300-450
+
+> **Note**
+> The DID number and DID pool cannot begin with **+**, **0**, or **00**; if your DID number or DID pool begins with **+**, **0**, or **00**, please remove it before entering.
 
 #### System Admin Add the Trunk
 
@@ -767,9 +770,9 @@ In the E1/T1 settings, set up the trunk "**Host Domain or IP**" as "**SIP Domain
 
 ### 7.2 Outbound parameters and Inbound parameters
 
-After completing the setup for trunk, you could also go to “**Call Manager > Trunks**” and select a trunk, click the "**Edit**" button to change the Inbound/Outbound Parameters for trunk.
+After completing the setup for trunk, you could also go to "**Call Manager > Trunks**" and select a trunk, click the "**Edit**" button to change the Inbound/Outbound Parameters for trunk.
 
-- In "**Outbound Parameters**" page, you could set some rules to make changes for headers of INVITE messages to be sent to trunk. For example, "**user**" of "**From**" SIP header could be set to "**Outbound Caller ID**" of the extension who starts the call. You can setup the “**Outbound caller ID**” of extension in the “**General**” page of extension, see section [5.2 General](#52-general).
+- In "**Outbound Parameters**" page, you could set some rules to make changes for headers of INVITE messages to be sent to trunk. For example, "**user**" of "**From**" SIP header could be set to "**Outbound Caller ID**" of the extension who starts the call. You can setup the "**Outbound caller ID**" of extension in the "**General**" page of extension, see section [5.2 General](#52-general).
 - In "**Inbound Parameters**" page, user could set rules to make changes to field values of SIP messages for incoming call which from trunk.
 
 > **Note**
@@ -801,9 +804,10 @@ To add Inbound Rule:
    - The CID number mask can be empty
 5. In the trunk box, select which trunk you wish to be associated with this DID and inbound rule, only allow assign one provider with an inbound rule.
 6. In the "**DID/DDI Number Mask**" field, enter the DID number as it will appear in the SIP "**To**" header (The number your trunk provider has been applied as your main, or first, DID number). PortSIP PBX will match the number inserted into this field with the "**To**" header of the `SIP INVITE` message which is trunk sends to PBX
-   - The DID number can be a single number likes 00442012345678
-   - The DID number can be serial numbers range, for example: 003325261000-003325262000.
+   - The DID number can be a single number likes 442012345678
+   - The DID number can be serial numbers range, for example: 3325261000-3325262000.
    - The single DID number or serial numbers range must in the trunk DID pool range.
+   - The DID number and DID pool cannot begin with **+**, **0**, or **00**; if your DID number or DID pool begins with **+**, **0**, or **00**, please remove them before entering.
 7. Specify how you wish to forward incoming calls according to this inbound rule.
    - Forward to number: permits you to enter a number and then forward the call to that number; the number can be an extension number or system extension number(ring group, virtual receptionist, meeting number, queue number) or a PSTN phone number.
    The number can also be a range, for example: 2000-3000. If set **Forward to number** as a range, this range must be serial numbers, and the DID Number Mask also must be a number range and both ranges size must be equaled.
@@ -825,21 +829,51 @@ If "**Use specific Office Hours**" is selected, customized office hours rules ap
 
 You can create multiple inbound rules based on a same DID number, but all these inbound rules should must the CID number mask, and the CID number mask must not be conflicted.
 
-**Example**:  You have a DID number `442012345670`. Now create two inbound rules: the CID for the first rule is set to `0044**********`, the DID number mask set to `00442012345670`, and the call is set to route to the **call queue 8000**; the CID for the second rule is set to `0033*********`, the DID number mask set to `00442012345670`, and the call is set to route to the **call queue 9000**.
+**Example**:  You have a DID number `00442012345670`. Now create two inbound rules: the CID for the first rule is set to `0044**********`, the DID number mask set to `442012345670`, and the call is set to route to the **call queue 8000**; the CID for the second rule is set to `0033*********`, the DID number mask set to `442012345670`, and the call is set to route to the **call queue 9000**.
 
 Now let all English-speaking employees to be agent of **call queue 8000**, let all French-speaking employees to be agent of **call queue 9000**. When the caller calls to `00442012345670`, callers from UK will be routed to the **call queue 8000** to talk with English agent, and callers from France will be routed to the **call queue 9000** to talk with French agent.
 
 #### Advanced Topic: route bulk numbers to bulk extensions
 
-If you are a large company have 1000 employees, and you purchased 1000 DID numbers  from the trunk service provider. These DID numbers are serdial nubmers. You wish to give each emploee a DID number then your clients can reach them by dial their DID number. But this is almost a impossible mission - need to create 1000 inbound rules to route the 1000 DID numbers to 1000 extensions(each employee is an extension).
+If you are a huge corporation with 1000 employees and have purchased 1000 DID numbers from a trunk service provider, serdial nubmers are used in these DID numbers. If you assign a DID number to each employee, your clients can reach them by dialing their DID number. However, this is an almost hard assignment because 1000 inbound rules must be created to route the 1000 DID numbers to 1000 extensions (each employee is an extension).
 
-PortSIP PBX provide a great feature that allows you just create one inbound rule to implement your purpose.
+PortSIP PBX has a great feature that allows you to implement your objective with just one inbound rule.
 
 Assume the DID numbers are `0012012345001-0012012346000`, and the employees extension numbers are `1001-2000`.
 
-1. Create an inbound rule, set the DID Number Mask to `0012012345001-0012012346000`.
+1. Create an inbound rule, set the DID Number Mask to `12012345001-12012346000`.
 2. Confiture the call route destination to `1001-2000`
 
 If someone dials `0012012345001`, the call will be routed to extension `1001`, and dials `0012012345005` the call will be routed to extension `1005`.
 
 ![Inbound Rule](../images/inbound_rule_1.png)
+
+### 8.2 Creating Outbound Rules
+
+An outbound rule decides through which trunk an outbound call would be placed.
+The rule is decided by the user/extension who is making the call, the number that is being dialed or the length of the number, or the user group to which the caller belong.
+
+To add outbound rules.
+
+- From the PortSIP PBX Web Portal menu, navigate to "**Call Manager > Outbound Rules**" and click  "**Add** " button. Enter a name for the new rule in the filed.
+- Priority, set the priority for the outbound rule. If a call is meets multiple outbound rules, lower number of priority has the higher priority.
+- Specify the criteria that should be matched for this outbound rule to be triggered with. In the "**Apply this rule to below calls**" section, specify any of the following options.
+  - Calls to numbers started with prefix: Apply this rule to all calls started with the number you specify. For example, enter "**00**" to specify that all calls with numbers started with 00 should trigger this rule. Callers should dial "**00123456**" to trigger this rule. You can specify more than one prefixes, separated by "**;**". For example, "**00;123;88**" specifies prefixes **00** and **123** and **88**. If the called number matches one of these prefixes, this rule will be triggered.
+  - Calls from extension(s): Select this option to define a particular extension or extension range for which this rule applies. Specify one or more extensions separated by semicolons, or specify a range by using a "**-**". For example 100-120.
+  - Calls to number with certain digits: Select this option to apply the rule to numbers with a particular digit length, for example 8 digits. By this method, you can capture calls to local area numbers or national numbers without requiring a prefix.
+  - Calls from extension group(s): Rather than specifying individual extensions, you can select an user group.
+- Now specify how to match outbound calls with the criteria. In the "**Make outbound calls on**" section, allows select up to three routes for the call. Each defined trunk will be listed as a possible route. If the first route is not available or busy, PortSIP PBX will automatically try the second route. You can drag and drop the route to adjust the priority.
+- You can transform the number that matches the outbound rule before the call is routed to the selected gateway or provider by using the "**Strip Digits**" and "**Prepend**" fields:
+  - Strip digits: Allows you to remove one or more digits from the called number. Use this option to remove the prefix before a call is dialed to the gateway or provider if it is not required. For example the extension make call to 002345, if you specify to remove two digits,  the prefix "**00**" will be removed before it is routed
+  - Prepend: Allows you to add one or more digits at the beginning of the number if this is required by the provider or gateway. For example, the extension make call to 002345, we specify 2 in the "**Strip digits**" field and set "**Prepend**" to "**+44**", the final called number which PBX forward to VoIP provider/SIP Trunk will be +442345
+
+#### Office hours for Outbound Rules
+
+In the "**Office Hours**" page, you can set the office hours for the outbound rule so that the outgoing call will be routed to trunks or not depending on the current hour.
+
+For example, if currently time is out of the specified office hours, the call fails even the outbound rule is successfully matched.
+
+If selected "**Use default Global Office Hours**", the PBX will use the office hours which set by `Tenant Admin`;
+
+If selected "**Use specific Office Hours**" this outbound rule will use the customized office hours.
+
