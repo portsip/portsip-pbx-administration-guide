@@ -959,5 +959,6 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 10. Add the TCP transport for SBC communicates with the PBX, please refer to the below screenshot, choose the **SBC private IP** for the **Network Interface**.
 
   ![SBC TCP transport](../images/sbc_tcp_transport.png)
+  
 11. Open the URL https://uc.portsip.io:8883/webRTC in the browser, the WebRTC client will be launched, just enter the extension number, password, and the tenant SIP domain to register to PBX to make & receive calls.
 
