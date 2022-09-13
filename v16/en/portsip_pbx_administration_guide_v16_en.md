@@ -345,8 +345,7 @@ You also need to open the port that you are using for adding new transport:
 > **Warning**
 > If the PBX running on a cloud platform such as AWS, and the cloud platform has the firewall itself, you MUST open the new transport port on the cloud platform firewall too.
 
-
-## 2 Configue PortSIP PBX
+## 2 Confiure PortSIP PBX
 
 After the PortSIP PBX has been installed successfully, use your browser to access the web portal at <https://66.175.221.120:8887>. The sign-in page looks like the one in the screenshot below.
 
@@ -503,6 +502,8 @@ In this section of `User`, you can enter the `username` and `password`, please n
 
 The user can grant permissions by selecting a role from the `Role` list box; the `User` role indicates that the user has typical extension access; the `Admin` role indicates that the user is a tenant administrator and can manage the tenant via the web port.
 
+If a user has the `Admin` role, we refer to them as a `Tenant Admin`. The `Tenant Admin` can manage the tenant.
+
 The PortSIP PBX allows add more than one administrator to a tenant.
 
 The `Email` field is mandatory since the PBX will need to send the notification email to the user's email address.
@@ -514,8 +515,6 @@ After an user was created, this user can sign in the Web portal by the `username
 Please refer to the below sceenhot:
 
 ![User Login](../images/user_login.png)
-
-If a user has the `Admin` role, we refer to them as a `Tenant Admin`. The `Tenant Admin` can manage the tenant.
 
 ### 5.2 General
 
@@ -876,4 +875,88 @@ For example, if currently time is out of the specified office hours, the call fa
 If selected "**Use default Global Office Hours**", the PBX will use the office hours which set by `Tenant Admin`;
 
 If selected "**Use specific Office Hours**" this outbound rule will use the customized office hours.
+
+## 9 Configure SBC for WebRTC
+
+The PortSIP PBX introduced a SBC which can be works as a componnet with PortSIP PBX that provide the WebRTC service and communicates with Microsoft Teams.
+
+PortSIP SBC Architecture Diagram
+
+The PortSIP SBC provides flexibility and scalability for the PortSIP PBX, allowing us to support large numbers of WebRTC customers.
+
+### 9.1 Deploy the PortSIP SBC and PBX on the same server
+
+Assume we install the PortSIP PBX and SBC on a server with the following configuration.
+
+- Private IP is **192.168.0.11**, public IP is **104.21.70.6**.
+- Domain uc.portsip.io has been resolved to the public IP **104.21.70.6**.
+- A trusted SSL certificate for domain uc.portsip.io
+
+Please read the [Prerequisite Knowledge for Linux](#prerequisite-knowledge-for-linux),  [Supported Linux OS](#supported-linux-os), and [Preparing the Linux Host Machine for Installation](#prerequisite-knowledge-for-linux) carefully.
+
+### 9.1.1 Install PortSIP PBX and SBC
+
+- Execute the below commands to download the installation scripts.
+
+```shell
+mkdir /opt/portsip && cd /opt/portsip
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_pbx_docker.sh     -o  install_pbx_docker.sh
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_pbx_ctl.sh        -o  portsip_pbx_ctl.sh
+```
+
+- Execute the below command to install the `Docker-Compose` environment.
+
+```shell
+/bin/sh install_pbx_docker.sh
+```
+
+- Create and run the PortSIP PBX docker container instance
+The below command is used to create and run the PBX on a server which the public IP is **104.21.70.6**.
+
+```shell
+/bin/sh portsip_pbx_ctl.sh run -p /var/lib/portsip -a 104.21.70.6 -i portsip/pbx:16
+```
+
+- Execute the below commands to download the SBC installation scripts.
+
+```shell
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_sbc_docker.sh     -o  install_sbc_docker.sh
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_sbc_ctl.sh        -o  portsip_sbc_ctl.sh
+```
+
+- The below command is used to create and run the SBC on the PBX server.
+
+```shell
+/bin/sh portsip_sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10
+```
+
+### 9.1.2 Configure the PortSIP PBX
+
+1. In the browser, navigate to http://uc.portsip.io:8888 and login in with the username and password `admin/admin`.
+2. The setup wizard will appear automatically; fill out the **Private IPv4** filed as `192.168.0.11`; fill out the **Public IPv4** filed as `104.21.70.6`. Click the **Next** button.
+3. In the step 2, enter the uc.portsip.io for **Web Domain** filed; open the SSL certificate files by Windows Notepad, copy and paste the file contents to the **Certificate File** and **Private key file** fileds. More details please refer to the [Setup Wizard 2: Certificate File](#22-setup-wizard-2-certificate-file). Click the **Next** button.
+4. In the step 3, add the TCP, UDP, TLS transports with the default port. Click the **OK** button to complete the setup wizard.
+
+### 9.1.3 Configure the PortSIP SBC
+
+1. Go to https://uc.portsip.io:8883 in the browser and log in using the credentials `admin/admin`. If the browser displays a SSL certificates warning, ignore the warning and continue processing.
+2. Choose **Settings > TLS Certifidates** from the menu, click **Add** button, and type "**SBC Host Name**" for the **Description** field as an example; enter the uc.portsip.io for the **TLS Domain**. Open the **portsip.pem** file in Windows Notepad and copy the contents to the **Certificate Context** field. Copy and paste the contents of the **portsip.key** file to the **Private Key Context** field. Click the **Submit** button to save the certificates.
+3. Select **Settings > Network** from the menu, then fill in the field **Web Domain** with uc.portsip.io, **Private IPv4** with `192.168.0.11`, and Public IPv4 with `104.21.70.6`. When you click the OK button, SBC will restart automatically and immediately sign you out.
+4. Execute the below commands in the PBX server.
+
+   ```shell
+   cd /opt/portsip
+   /bin/sh portsip_pbx_ctl.sh restart
+   /bin/sh /bin/sh portsip_sbc_ctl.sh restart
+   ```
+
+5. Sign in the PBX web portal https://uc.portsip.io:8887, click the menu **Advanced > SBC**. Enter uc.portsip.io for the **WebRTC Base Domain**, enter **5060** for the **WebRTC Client URL Port**.
+6. Click the **Generate** button to generate the token for the SBC accessing. Click the **Copy** button to copy the token then click **OK** button to save it.
+7. Sign in the PortSIP SBC Web Portal https://uc.portsip.io:8883. Choose **Settings > PBX** from the menu, you must need to set the PBX information here then the SBC will communicate with the PBX. Paste the copied token to **PBX Access Token** filed, enter the PBX private IP `192.168.1.11` for **PBX private IPv4 Address** filed. Since the TCP transport is created on the port 5063 in the PBX, therfore, please choose the **TCP** for "**Prefer to transport to communicate with PBX**", and enter the "**5063**" for "**PBX Port**".
+8. Choose **Settings > Transports** from the menu, The SBC requires to add two transports here. One is for the WebRTC clients, another one for the SBC communicates with the PBX.
+9. Add the WSS transport for WebRTC clients as the below screenshot, please choose the **SBC public IP** for the **Network Interface**.
+![SBC WSS transport](../images/sbc_wss_transport.png)
+10. Add the TCP transport for SBC communicates with the PBX as the below screenshot, please choose the **SBC private IP** for the **Network Interface**.
+![SBC TCP transport](../images/sbc_tcp_transport.png)
+11. Open the URL https://uc.portsip.io:8883/webRTC the WebRTC client will be launched, just enter the extension number, password, and the tenant SIP domain to register to PBX to make & receive calls.
 
