@@ -277,7 +277,7 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 The below command is used to create and run the SBC on the PBX server together.
 
 ```shell
-/bin/sh portsip_sbc_ctl.sh run -p /data/portsip -i portsip/sbc:10
+/bin/sh portsip_sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10
 ```
 
 You also need to open the port that you are using for adding new transport:
