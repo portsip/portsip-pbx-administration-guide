@@ -1,2 +1,2 @@
 # PortSIP PBX Administration Guide
-The Administration Guide for PortSIP PBX v16
+The Administration Guide for PortSIP PBX
