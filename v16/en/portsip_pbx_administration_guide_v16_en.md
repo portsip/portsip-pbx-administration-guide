@@ -223,7 +223,7 @@ Tasks that MUST be completed before installing PortSIP PBX.
 - PortSIP PBX must not be installed on a host which is a DNS or DHCP server.
 - Below ports must be permitted by your firewall.
   - UDP: 5060, 25000 - 35000, 45000 – 65000
-  - TCP: 5065, 8883, 8885, 8887, 8888
+  - TCP: 5061, 5063, 5065, 8883, 8885, 8887, 8888
     Please also ensure the above ports have not been used by other applications.
 - Ensure server date-time is synced correctly
 - Must execute all Linux commands by the root user, please su root first.
@@ -236,7 +236,8 @@ Tasks that MUST be completed before installing PortSIP PBX.
 Execute the below commands to download the installation scripts.
 
 ```shell
-mkdir /opt/portsip && cd /opt/portsip
+mkdir /opt/portsip/pbx
+cd /opt/portsip/pbx
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_pbx_docker.sh     -o  install_pbx_docker.sh
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_pbx_ctl.sh        -o  portsip_pbx_ctl.sh
 ```
@@ -246,7 +247,7 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 Execute the below command to install the `Docker-Compose` environment.
 
 ```shell
-/bin/sh install_pbx_docker.sh
+cd /opt/portsip/pbx && /bin/sh install_pbx_docker.sh
 ```
 
 ### Step 3 Create and run the PortSIP PBX docker container instance
@@ -254,7 +255,7 @@ Execute the below command to install the `Docker-Compose` environment.
 The below command is used to create and run the PBX on a server which the IP is `66.175.221.120`.
 
 ```shell
-/bin/sh portsip_pbx_ctl.sh run -p /var/lib/portsip -a 66.175.221.120 -i portsip/pbx:16
+/bin/sh portsip_pbx_ctl.sh run -p /var/lib/portsip -a 66.175.221.120 -i portsip/pbx:16.0.0.2435-beta
 ```
 
 If run the PBX in a LAN without public IP, just replace the `66.175.221.120` by private IP of the PBX server,.
@@ -270,6 +271,8 @@ The PortSIP SBC can be act as a componet of the PortSIP PBX to provide the WebRT
 Execute the below commands to download the installation scripts.
 
 ```shell
+mkdir /opt/portsip/sbc 
+cd /opt/portsip/sbc
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_sbc_docker.sh     -o  install_sbc_docker.sh
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_sbc_ctl.sh        -o  portsip_sbc_ctl.sh
 ```
@@ -277,7 +280,7 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 The below command is used to create and run the SBC on the PBX server together.
 
 ```shell
-/bin/sh portsip_sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10
+/bin/sh portsip_sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10.0.0.97-beta
 ```
 
 You also need to open the port that you are using for adding new transport:
@@ -306,7 +309,7 @@ Tasks that MUST be completed before installing PortSIP PBX.
 - PortSIP PBX must not be installed on a host which is a DNS or DHCP server, or that has MS SharePoint or Exchange services installed.
 - Below ports must be permitted by your firewall.
   - UDP: 5060, 25000 - 35000, 45000 – 65000
-  - TCP: 5065, 8883, 8885, 8887, 8888
+  - TCP:  5061, 5063, 5065, 8883, 8885, 8887, 8888
     Please also ensure the above ports have not been used by other applications.
 - Ensure server date-time is synced correctly
 - Ensure your Windows Firewall is enabled
@@ -333,7 +336,7 @@ If your server has a firewall which is blocking the ports, you must open the bel
 
 - Below ports must be permitted by your firewall.
   - UDP: 5060, 25000 - 35000, 45000 – 65000
-  - TCP: 5065, 8883, 8885, 8887, 8888
+  - TCP:  5061, 5063, 5065, 8883, 8885, 8887, 8888
     Please also ensure the above ports have not been used by other applications.
 
 You also need to open the port that you are using for adding new transport:
@@ -899,7 +902,8 @@ Please read the [Prerequisite Knowledge for Linux](#prerequisite-knowledge-for-l
 - Execute the below commands to download the installation scripts.
 
 ```shell
-mkdir /opt/portsip && cd /opt/portsip
+mkdir /opt/portsip/pbx
+cd /opt/portsip/pbx
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_pbx_docker.sh     -o  install_pbx_docker.sh
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_pbx_ctl.sh        -o  portsip_pbx_ctl.sh
 ```
@@ -914,12 +918,14 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 The below command is used to create and run the PBX on a server which the public IP is **104.21.70.6**.
 
 ```shell
-/bin/sh portsip_pbx_ctl.sh run -p /var/lib/portsip -a 104.21.70.6 -i portsip/pbx:16
+/bin/sh portsip_pbx_ctl.sh run -p /var/lib/portsip -a 104.21.70.6 -i portsip/pbx:16.0.0.2435-beta
 ```
 
 - Execute the below commands to download the SBC installation scripts.
 
 ```shell
+mkdir /opt/portsip/sbc
+cd /opt/portsip/sbc
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_sbc_docker.sh     -o  install_sbc_docker.sh
 curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/portsip_sbc_ctl.sh        -o  portsip_sbc_ctl.sh
 ```
@@ -927,7 +933,7 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 - The below command is used to create and run the SBC on the PBX server.
 
 ```shell
-/bin/sh portsip_sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10
+/bin/sh portsip_sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10.0.0.97-beta
 ```
 
 ### 9.1.2 Configure the PortSIP PBX
@@ -945,8 +951,9 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 4. Execute the below commands in the PBX server.
 
    ```shell
-   cd /opt/portsip
+   cd /opt/portsip/pbx
    /bin/sh portsip_pbx_ctl.sh restart
+   cd /opt/portsip/sbc
    /bin/sh portsip_sbc_ctl.sh restart
    ```
 
@@ -956,5 +963,11 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/ports
 8. Choose **Settings > Transports** from the menu, The SBC requires to add two transports here. One is for the WebRTC clients, another one for the SBC communicates with the PBX.
 9. Add the WSS transport for WebRTC clients as the below screenshot, please choose the **SBC public IP** for the **Network Interface**; Add the TCP transport for SBC communicates with the PBX, please refer to the below screenshot, choose the **SBC private IP** for the **Network Interface**.
 ![SBC PBX transport](../images/sbc_pbx_transport.png)
-10. Open the URL https://uc.portsip.io:8883/webRTC in the browser, the WebRTC client will be launched, just enter the extension number, password, and the tenant SIP domain to register to PBX to make & receive calls.
+10. Open the transports port **5069** on the firewall by te below commands.
+  
+    ```shell
+      firewall-cmd --permanent --service=portsip-sbc --add-port=5069/tcp --set-description="PortSIP SBC"
+    ```
+
+11. Open the URL https://uc.portsip.io:8883/webRTC in the browser, the WebRTC client will be launched, just enter the extension number, password, and the tenant SIP domain to register to PBX to make & receive calls.
 
