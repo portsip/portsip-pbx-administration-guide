@@ -106,6 +106,7 @@ PBX的安装程序可以在[PortSIP网站](https://www.portsip.com/download-port
 
 > 在安装过程中，选择 PBX 文件夹时，以下两个文件夹不能相同！
 
+![pbx_setup_select_directory.png](v16/images/pbx_setup_select_directory.png)
 
 
 ## 1.4 配置防火墙规则
