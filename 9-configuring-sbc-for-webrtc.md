@@ -70,7 +70,7 @@ cd /opt/portsip
 你可以在PortSIP网站上下载PortSIP SBC的安装程序，只需双击安装程序并按照说明进行安装。
   
 ## 9.2.2 配置PortSIP SBC   
-1. 按照[准备TLS/HTTPS/WebRTC的SSL证书指南](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)准备SSL证书。
+1. 按照[准备TLS/HTTPS/WebRTC的SSL证书指南](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)准备一个通配符SSL证书。
 2. 在浏览器中进入https://uc.portsip.cc:8883 ，并使用凭证admin/admin登录。如果浏览器显示SSL证书警告，请忽略该警告并继续处理。
 3. 从菜单中选择 "设置 > TLS证书"，点击添加按钮，在 "描述 "栏中输入 "SBC主机名称 "为例；在 "TLS域 "中输入uc.portsip.cc。在Windows记事本中打开 "portsip.pem "文件，将其内容复制到 "Certificate Context "字段。复制并粘贴 "portsip.key" 文件的内容到 "Private Key Context" 字段。点击 "确定 "按钮，保存证书。
 4. 从菜单中选择 "设置 > 网络"，然后在 "网络域 "字段中填写uc.portsip.cc，"私有IPv4 "填写192.168.1.72，公共IPv4填写66.175.221.120。默认情况下，"自动创建默认传输 "选项是打开的，SBC 将在成功设置 SBC IP 地址后创建默认传输。
@@ -119,5 +119,46 @@ firewall-cmd --reload
 + 为域名 portsip.cc 提供一个可信的通配符 SSL 证书
   
 请仔细阅读[支持的 Linux 操作系统](https://support.portsip.com/portsip-pbx-user-guide/portsip-pbx-administration-guide-v16.x/1-installation-of-the-portsip-pbx#supported-linux-os)、[为安装准备 Linux 主机](https://support.portsip.com/portsip-pbx-user-guide/portsip-pbx-administration-guide-v16.x/1-installation-of-the-portsip-pbx#preparing-the-linux-host-machine-for-installation)、[为 TLS/HTTPS/WebRTC 准备 TLS 证书](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)。
+  
+## 9.3.1 安装PortSIP PBX和SBC
+假设PBX已经被安装为[1安装了PortSIP PBX](https://support.portsip.com/portsip-pbx-administration-guide/1-installation-of-the-portsip-pbx)。
+  
+**安装PortSIP SBC for Linux**
+  
+在SBC服务器上，要安装SBC，请按照以下步骤进行。
++ 执行下面的命令，下载SBC的安装脚本。
+```
+mkdir -p /opt/portsip
+cd /opt/portsip
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/install_sbc_docker.sh     -o  install_sbc_docker.sh
+curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/v16.x/sbc_ctl.sh        -o  sbc_ctl.sh
+```
++ 执行下面的命令来安装Docker-Compose环境。 如果得到像*** cloud.cfg (Y/I/N/O/D/Z) [default=N] 这样的提示，输入Y，然后按回车键。
+```
+cd /opt/portsip
+/bin/sh install_sbc_docker.sh
+```
++ 下面的命令用于在 PBX 服务器上创建和运行 SBC。
+```
+cd /opt/portsip
+/bin/sh sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10
+```
+**安装PortSIP SBC for Windows**  
+你可以在PortSIP网站上下载PortSIP SBC的安装程序，只需双击安装程序并按照说明进行安装。
+  
+## 9.3.2 配置PortSIP SBC   
+1. 按照[准备TLS/HTTPS/WebRTC的SSL证书指南](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)准备一个通配符SSL证书。
+2. 在浏览器中进入https://sbc.portsip.cc:8883 ，并使用凭证admin/admin登录。如果浏览器显示SSL证书警告，忽略该警告并继续处理。
+3. 从菜单中选择 "设置 > TLS证书"，点击添加按钮，在 "描述 "栏中输入 "SBC主机名称 "为例；在 "TLS域 "中输入portsip.cc。在Windows记事本中打开 "portsip.pem "文件，将其内容复制到 "Certificate Context "字段。复制并粘贴 "portsip.key" 文件的内容到 "Private Key Context" 栏。点击 "提交 "按钮，保存证书。
+4. 从菜单中选择 "设置 > 网络"，然后在 "网络域 "字段中填入 portsip.cc，"私有 IPv4 "填入 192.168.1.73，而公共 IPv4 填入 66.175.221.120。默认情况下，"自动创建默认传输 "选项是打开的，在成功设置SBC的IP地址后，SBC将创建默认传输。这是5069端口的TCP，用于与PBX通信；5067端口的TLS，用于与Microsoft Teams通信；5065端口的WSS，用于提供WebRTC服务。你可以关闭这个选项，以防止SBC自动创建默认传输，但不建议这样做。
+5. 默认的传输方式。
+ + 5069端口的TCP：用于与PBX通信。
+ + 5067端口的TLS：用于与Microsoft Teams通信
+ + 5065端口的WSS：用于提供WebRTC服务。
+ + 5066端口的UDP：用于提供正常的SIP服务。
+ 你可以关闭这个选项，防止SBC自动创建默认的传输，但不建议这样做。
+6. 当你点击确定按钮时，SBC将自动重新启动，并立即签出你的名字。
+7. 在SBC服务器上执行以下命令。 如果服务器是Windows，直接重启服务器即可。
+
 
 
