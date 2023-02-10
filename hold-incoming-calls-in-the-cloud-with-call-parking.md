@@ -35,7 +35,7 @@ Call Park Group功能允许定义的组用户对Call Park Group的其它可用�
 + 一个Call Park Group只能有来自同一租户的用户。
 + 一个租户可以有多个Call Park Group。
 + Call Park Group的名称必须是唯一的。
-## 修改呼叫中心   
+## 修改Call Park   
 + 登录到PBX Web Portal。
 + 选择 "高级服务 "页面.
 + 选择通话驻留
