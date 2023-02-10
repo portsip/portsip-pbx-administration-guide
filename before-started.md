@@ -54,9 +54,9 @@ Windows桌面或Windows服务器操作系统：
 为了建立一个高可用性的通信解决方案，帮助客户降低成本，提高通信性能，PortSIP PBX承诺支持云服务，并确认与以下云和虚拟化环境兼容：   
 + VMware ESX 5.X及以上版本。
 + Linux HyperV
-+ 微软HyperV 2016 R2及以上版本
-+ 微软AZURE
-+ 亚马逊AWS
++ Microsoft HyperV 2016 R2及以上版本
++ Microsoft AZURE
++ Amazon AWS
 + Google Could
 + 数字海洋
 + 阿里云
