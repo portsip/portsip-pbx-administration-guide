@@ -71,7 +71,7 @@ cd /opt/portsip
   
 ## 9.2.2 配置PortSIP SBC   
 1. 按照[准备TLS/HTTPS/WebRTC的SSL证书指南](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)准备一个通配符SSL证书。
-2. 在浏览器中进入https://uc.portsip.cc:8883 ，并使用凭证admin/admin登录。如果浏览器显示SSL证书警告，请忽略该警告并继续处理。
+2. 在浏览器中进入 https://uc.portsip.cc:8883 ，并使用凭证admin/admin登录。如果浏览器显示SSL证书警告，请忽略该警告并继续处理。
 3. 从菜单中选择 "**设置 > TLS证书**"，点击**添加**按钮，在 "**描述** "栏中输入 "**SBC主机名称** "为例；在 "**TLS域名** "中输入portsip.cc。在Windows记事本中打开 "**portsip.pem** "文件，将其内容复制到 "**证书内容** "字段。复制并粘贴 "portsip.key" 文件的内容到 "**私钥内容**" 栏。点击 "**确定** "按钮，保存证书。
 4. 从菜单中选择 "**设置 > 网络**"，然后在 "**Web域名** "字段中填入 portsip.cc，"**SBC 内网 IPv4 地址**"填入 192.168.1.73，而**SBC 公网 IPv4** 地址 填入 66.175.221.120。默认情况下，"**自动创建默认传输** "选项是打开的，在成功设置SBC的IP地址后，SBC将创建默认传输。
 5. 默认的传输方式。
@@ -86,8 +86,8 @@ cd /opt/portsip
 cd /opt/portsip
 /bin/sh sbc_ctl.sh restart
 ```
-8. 登录PBX Web Portal，https://uc.portsip.cc:8887，并点击菜单 "**高级>SBC**"。点击 "**生成** "按钮，生成SBC的访问令牌。点击 "**复制** "按钮，复制该令牌。
-9. 登录PortSIP SBC Web Portal https://uc.portsip.cc:8883。从菜单中选择"**设置 > PBX**"。你必须在这里设置PBX的信息，然后SBC才能和PBX进行通信。将复制的令牌粘贴到 "**PBX 访问 token** "区域，并在 "**PBX IPv4 地址** "区域输入PBX的私有IP 192.168.1.72。由于PBX的TCP传输是在5063端口创建的，所以请在 "**优先使用下面 Transport 与 PBX 通信** "中选择**TCP**，并在 "**PBX SIP 端口** "中输入 "**5063**"。
+8. 登录PBX Web Portal， https://uc.portsip.cc:8887 ，并点击菜单 "**高级>SBC**"。点击 "**生成** "按钮，生成SBC的访问令牌。点击 "**复制** "按钮，复制该令牌。
+9. 登录PortSIP SBC Web Portal https://uc.portsip.cc:8883 。从菜单中选择"**设置 > PBX**"。你必须在这里设置PBX的信息，然后SBC才能和PBX进行通信。将复制的令牌粘贴到 "**PBX 访问 token** "区域，并在 "**PBX IPv4 地址** "区域输入PBX的私有IP 192.168.1.72。由于PBX的TCP传输是在5063端口创建的，所以请在 "**优先使用下面 Transport 与 PBX 通信** "中选择**TCP**，并在 "**PBX SIP 端口** "中输入 "**5063**"。
 10. 在菜单中选择 "**设置 > Transports**"。SBC需要在这里添加三种类型的传输。一个用于WebRTC客户端，一个用于Microsoft Teams，还有一个用于SBC与PBX的通信。在上述第4步完成后，打开 "自动创建默认传输 "选项，SBC将自动创建默认传输。这些默认的传输方式不建议改变。
 11. **如果你一直使用默认的传输方式，这一步就没有必要了**。如果你想创建自己的传输，你可以删除现有的传输。
 + 添加 "**TCP** "传输，用于SBC与PBX的通信，请参考下面的截图，并在 "**网卡接口** "中选择 "**SBC私网IP**"。
