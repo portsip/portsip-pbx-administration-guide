@@ -72,8 +72,8 @@ cd /opt/portsip
 ## 9.2.2 配置PortSIP SBC   
 1. 按照[准备TLS/HTTPS/WebRTC的SSL证书指南](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)准备一个通配符SSL证书。
 2. 在浏览器中进入https://uc.portsip.cc:8883 ，并使用凭证admin/admin登录。如果浏览器显示SSL证书警告，请忽略该警告并继续处理。
-3. 从菜单中选择 "设置 > TLS证书"，点击添加按钮，在 "描述 "栏中输入 "SBC主机名称 "为例；在 "TLS域 "中输入uc.portsip.cc。在Windows记事本中打开 "portsip.pem "文件，将其内容复制到 "Certificate Context "字段。复制并粘贴 "portsip.key" 文件的内容到 "Private Key Context" 字段。点击 "确定 "按钮，保存证书。
-4. 从菜单中选择 "设置 > 网络"，然后在 "网络域 "字段中填写uc.portsip.cc，"私有IPv4 "填写192.168.1.72，公共IPv4填写66.175.221.120。默认情况下，"自动创建默认传输 "选项是打开的，SBC 将在成功设置 SBC IP 地址后创建默认传输。
+3. 从菜单中选择 "**设置 > TLS证书**"，点击**添加**按钮，在 "**描述** "栏中输入 "**SBC主机名称** "为例；在 "**TLS域名** "中输入portsip.cc。在Windows记事本中打开 "**portsip.pem** "文件，将其内容复制到 "**证书内容** "字段。复制并粘贴 "portsip.key" 文件的内容到 "**私钥内容**" 栏。点击 "**确定** "按钮，保存证书。
+4. 从菜单中选择 "**设置 > 网络**"，然后在 "**Web域名** "字段中填入 portsip.cc，"**SBC 内网 IPv4 地址**"填入 192.168.1.73，而**SBC 公网 IPv4** 地址 填入 66.175.221.120。默认情况下，"**自动创建默认传输** "选项是打开的，在成功设置SBC的IP地址后，SBC将创建默认传输。
 5. 默认的传输方式。
  + 5069端口的TCP：用于与PBX通信
  + 5067端口的TLS：用于与Microsoft Teams通信
@@ -149,8 +149,8 @@ cd /opt/portsip
 ## 9.3.2 配置PortSIP SBC   
 1. 按照[准备TLS/HTTPS/WebRTC的SSL证书指南](https://support.portsip.com/tutorials/preparing-tls-certificates-for-tls-https-webrtc)准备一个通配符SSL证书。
 2. 在浏览器中进入https://sbc.portsip.cc:8883 ，并使用凭证admin/admin登录。如果浏览器显示SSL证书警告，忽略该警告并继续处理。
-3. 从菜单中选择 "设置 > TLS证书"，点击添加按钮，在 "描述 "栏中输入 "SBC主机名称 "为例；在 "TLS域 "中输入portsip.cc。在Windows记事本中打开 "portsip.pem "文件，将其内容复制到 "Certificate Context "字段。复制并粘贴 "portsip.key" 文件的内容到 "Private Key Context" 栏。点击 "提交 "按钮，保存证书。
-4. 从菜单中选择 "设置 > 网络"，然后在 "网络域 "字段中填入 portsip.cc，"私有 IPv4 "填入 192.168.1.73，而公共 IPv4 填入 66.175.221.120。默认情况下，"自动创建默认传输 "选项是打开的，在成功设置SBC的IP地址后，SBC将创建默认传输。这是5069端口的TCP，用于与PBX通信；5067端口的TLS，用于与Microsoft Teams通信；5065端口的WSS，用于提供WebRTC服务。你可以关闭这个选项，以防止SBC自动创建默认传输，但不建议这样做。
+3. 从菜单中选择 "**设置 > TLS证书**"，点击**添加**按钮，在 "**描述** "栏中输入 "**SBC主机名称** "为例；在 "**TLS域名** "中输入portsip.cc。在Windows记事本中打开 "**portsip.pem** "文件，将其内容复制到 "**证书内容** "字段。复制并粘贴 "portsip.key" 文件的内容到 "**私钥内容**" 栏。点击 "**确定** "按钮，保存证书。
+4. 从菜单中选择 "**设置 > 网络**"，然后在 "**Web域名** "字段中填入 portsip.cc，"**SBC 内网 IPv4 地址**"填入 192.168.1.73，而**SBC 公网 IPv4** 地址 填入 66.175.221.120。默认情况下，"**自动创建默认传输** "选项是打开的，在成功设置SBC的IP地址后，SBC将创建默认传输。
 5. 默认的传输方式。
  + 5069端口的TCP：用于与PBX通信。
  + 5067端口的TLS：用于与Microsoft Teams通信
