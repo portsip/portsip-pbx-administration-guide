@@ -1,8 +1,8 @@
 # 通过Call Park将来电保留在云端
 ## 
-Call Park和呼叫取回功能允许你在你的分机或其他用户的分机上驻留一个正在进行的呼叫，并从其他电话中取回驻留的呼叫。  
+Call Park和呼叫取回功能允许你在你的分机或其它用户的分机上驻留一个正在进行的呼叫，并从其它电话中取回驻留的呼叫。  
   
-这类似于保留电话，但其他桌面电话可以取回电话。  
+这类似于保留电话，但其它桌面电话可以取回电话。  
   
 任何使用同一台PBX的人都可以接听该电话--这个过程被称为呼叫取回。与呼叫转移不同，Call Park让你可以选择随时接听电话，而不是实时接听。
 ## Call Park的优点
@@ -27,7 +27,7 @@ BOb只是把电话转到`*68102`，然后挂断。一旦呼叫成功驻留，Ali
 并亮起，显示一条信息，提醒有通话驻留在分机102。Alice只需要点击按钮（PortSIP App）或按下按键（Fanvil、Yealink IP电话）就可以取回电话，而不是拨`*88`。
 ![](https://4230641821-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MfkamWLaD5pcQwlKWwC%2Fuploads%2Fw9YLPdfztT3zgnaBkkll%2Fpark_t31.png?alt=media&token=462ede1b-a1f2-42dd-a859-fe114d2d5f4d)
 ## Call Park Group
-Call Park Group功能允许定义的组用户对Call Park Group的其他可用成员驻留呼叫，可由该组的其他成员在其电话上接听。
+Call Park Group功能允许定义的组用户对Call Park Group的其它可用成员驻留呼叫，可由该组的其他成员在其电话上接听。
 ## 功能说明
 始前须知：
 + Call Park Group是租户级功能，由PortSIP许可提供，不需要额外费用。   
