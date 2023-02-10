@@ -1,4 +1,4 @@
-# 利用PortSIP PBX的Pub/Sub实现实时通信
+# 使用PortSIP PBX的Pub/Sub实现实时通信
 PortSIP PBX提供基于WebSocket（PortSIP WSI）的Pub/Sub机制。用户可以用任何编程语言创建WebSocket来订阅PBX事件，一旦订阅的事件发生，PortSIP PBX将自动推送事件信息给订阅者，信息为JSON格式。
   
 支持版本：16.0版本或更高
@@ -9,6 +9,7 @@ PortSIP PBX为Pub/Sub提供以下主题和密钥。
 ## extension_events
 所有与分机有关的事件消息都将由` extension_events `发布。下面，是各种消息的键。
 + `extension_register`: 分机在PBX上注册或从PBX上取消注册。  
+    
 例如，分机102注册到PBX，用户会收到以下信息:
 ```
 {
@@ -187,11 +188,115 @@ PortSIP PBX为Pub/Sub提供以下主题和密钥。
 }
 ```
 在上面的例子中，102呼叫103，但是103离线，所以呼叫失败，fail_code是480，与SIP标准的状态码相同。   
-+ `target_add`: 开始呼叫一个目标。例如，分机101从IP电话或应用程序注册到PBX，当有人呼叫101时，IP电话或应用程序将被添加为目标。(target_add事件将被触发两次）。
++ `target_add`: 开始呼叫一个目标。例如，分机101从IP Phone或App注册到PBX，当有人呼叫101时，IP Phone或APP将被添加为目标。(target_add事件将被触发两次）。
 + `target_ringing`: 被叫的目标正在响铃。
 + `target_noanswer`: 被呼叫的目标没有回答。
-+ `target_fail`: 来自被叫目标的呼叫失败。例如，应用程序/IP电话拒绝了该呼叫。
-+ `target_ended`: 被叫目标的呼叫已经结束。例如，App / IP电话挂断了电话。
++ `target_fail`: 来自被叫目标的呼叫失败。例如，APP/IP Phone拒绝了该呼叫。
++ `target_ended`: 被叫目标的呼叫已经结束。例如，App / IP Phone挂断了电话。
 ## cdr_events
 一旦一个呼叫结束，这个呼叫的CDR将被推送给用户，消息主题是：`cdr_events`，消息键如下。
-+ `call_cdr`：一旦一个呼叫结束，CDR将被打包成JSON格式并推送给用户。
++ `call_cdr`：通话结束后，CDR将被打包成JSON格式并推送给用户。  
+## queue_events
+一旦队列状态发生变化，例如在队列中的呼叫者挂断了电话，或者在队列中的呼叫者被代理接听，相关的状态信息将被推送给用户。消息主题是**queue_events**。下面是消息键。   
++ `queue_status`：如果队列状态改变，信息将被打包成JSON消息并推送给用户。
++ `queue_member_state`：如果队列状态的坐席被设置为ready或not-ready，这个消息将被推送。  
+  
+## 订阅和取消订阅
+为了订阅事件，用户需要通过打开WebSocket连接到PortSIP PBX的监听端口(8885)来建立一个会话，并提供认证凭证。这需要在PortSIP PBX上建立一个用户账户。这个用户账户可以是一个分机或租户。  
+  
+你可以使用下面的JSON消息来进行授权:
+```
+{
+"command":"auth",
+"username":"testuser",
+"domain":"test.com",
+"password":"111111"
+}
+```
+`domain`是分机的SIP域名，`Password`是分机的`用户密码`。  
+  
+如果没有错误，响应如下：
+```
+{"status":0}
+```
+  
+否则，响应中包括如下错误：
+  
+```
+{"error":"name or password error","status":-1}
+```
+  
+成功通过认证后，用户现在可以订阅事件。  
+  
+例如，如果分机101希望订阅分机102和103的事件，只需发送下面的命令来订阅：  
+```
+
+{
+"command":"subscribe",
+"topics":[
+ "extension_events"
+],
+"extensions":[
+"102",
+"103"] 
+}
+```  
+  
+如果我们想同时订阅扩展事件和CDR事件，使用下面的命令：
+```
+{
+"command":"subscribe",
+"topics":
+[
+  "extension_events,
+  "cdr_events"
+],
+"extensions":
+[
+"102",
+"103"
+]  
+}
+```  
+  
+如果我们想取消对事件的订阅，请使用下面的命令：
+```
+{
+"command" : "unsubscribe",
+"topics":
+[
+  "extension_events", 
+  "topic" : "cdr_events"
+],
+"extensions":
+[
+"102",
+"103"
+]  
+}
+```  
+  
+如果我们只想取消对CDR事件的订阅，使用下面的命令：
+```
+{
+"command":"unsubscribe",
+"topics":[ "cdr_events" ] 
+}
+```  
+  
+如果我们想订阅队列状态，使用下面的命令。  
+  
+注意，分机只有权订阅属于该分机的队列，如果分机（订阅者）不是该队列的成员，也不是该队列的队列管理员，事件将不会推送给分机（订阅者）。例如，如果分机101是队列8001和8002的成员/代理/队列管理员，在101订阅了队列事件后，8001和8002的队列状态都将被推送给分机101。  
+  
+租户有订阅任何队列的权限。  
+```
+{
+"command":"subscribe",
+"topics":[ "queue_events" ],
+"queues":
+[
+"8001",
+"8002"
+]  
+}
+```
