@@ -53,19 +53,19 @@ cd /opt/portsip
 ```
 cd /opt/portsip && /bin/sh sbc_ctl.sh status
 ```
-#### 启动 SBC Docker 实例。
+#### 启动 SBC Docker 实例
 ```
 cd /opt/portsip && /bin/sh sbc_ctl.sh start
 ```
-#### 停止 SBC Docker 实例。
+#### 停止 SBC Docker 实例
 ```
 cd /opt/portsip && /bin/sh sbc_ctl.sh stop
 ```
-#### 重新启动 SBC Docker 实例。
+#### 重新启动 SBC Docker 实例
 ```
 cd /opt/portsip && /bin/sh sbc_ctl.sh restart
 ```
-#### 删除 SBC Docker 实例。
+#### 删除 SBC Docker 实例
 ```
 cd /opt/portsip && /bin/sh sbc_ctl.sh rm
 ```
@@ -114,4 +114,4 @@ cd /opt/porsip
 cd /var/lib/portsip/
 rm -rf sbc
 ```
-对于 Windows 的安装，只需从 Windows 控制面板上卸载即可。
+对于 Windows 的安装，只需从 Windows 控制面板上卸载即可
