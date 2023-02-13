@@ -14,7 +14,7 @@
   
 ### 准备安装的Linux主机
 在安装PortSIP SBC之前，必须完成的任务。   
-+ 如果将安装SBC的Linux位于一个局域网内，为SBC服务器分配一个`静态的局域网IP地址`；如果它在一个公共网络上，为SBC服务器分配一个`静态的私有IP地址`和一个`静态的公共IP地址`。
++ 如果将安装SBC的Linux位于一个局域网内，为SBC服务器分配一个`静态的局域网IP地址`；如果它在一个公网上，为SBC服务器分配一个`静态的内网IP地址`和一个`静态的公网IP地址`。
 + 在安装PortSIP SBC之前，请安装所有可用的更新和服务包。
 + 确保你的系统和网络适配器的所有节能选项被禁用（通过将系统设置为高性能）。
 + 不要在主机上安装TeamViewer、VPN和其他类似软件。
@@ -46,7 +46,7 @@ cd /opt/portsip
 cd /opt/portsip
 /bin/sh sbc_ctl.sh run -p /var/lib/portsip -i portsip/sbc:10
 ```
-现在你可以通过[ https://server-ip-or-domain:8883] 访问 SBC Web Portal，默认的系统管理员名称和密码是`admin`。  
+现在你可以通过[ https://server-ip-or-domain:8883](https://server-ip-or-domain:8883) 访问 SBC Web Portal，默认的系统管理员名称和密码是`admin`。  
   
 成功创建SBC docker实例后，你可以使用下面的命令来管理它。
 #### 显示SBC Docker实例的状态。
@@ -77,7 +77,7 @@ cd /opt/portsip && /bin/sh sbc_ctl.sh rm
 
 ### 准备安装的Windows主机
 安装PortSIP SBC之前必须完成的任务。   
-+ 如果将安装SBC的Windows PC/服务器位于局域网内，请分配一个静态的局域网IP地址；如果它在公共网络中，请分配一个公共网络的静态IP地址。
++ 如果将安装SBC的Linux位于一个局域网内，为SBC服务器分配一个`静态的局域网IP地址`；如果它在一个公网上，为SBC服务器分配一个`静态的内网IP地址`和一个`静态的公网IP地址`。
 + 在安装PortSIP SBC之前，请安装所有可用的Windows更新和服务包。安装Windows更新后的重新启动可能会发现额外的更新。在运行PortSIP PBX安装之前，要特别注意安装所有Microsoft .Net的更新。
 + 防病毒软件不应该扫描以下目录，以避免复杂化和写访问延迟。`C:\Program Files\PortSIP`; `C:\Programdata\PortSIP`
 + 不要在您的PortSIP SBC服务器上安装VPN、TeamViewer软件。
@@ -103,7 +103,7 @@ SBC安装程序可以在[PortSIP Website](https://www.portsip.com/download-ports
    + UDP: 5066, 25000-35000
    + TCP: 5065, 5067, 8882, 8883. 也请确保上述端口没有被其他应用程序使用。
 >如果SBC运行在云平台上，如AWS，并且云平台有自己的防火墙，你也必须在云平台的防火墙上打开端口。  
-现在你可以通过[https://server-ip-or-domain:8883]，访问SBC Web portal，默认的系统管理员名称和密码是`admin`。
+现在你可以通过[https://server-ip-or-domain:8883](https://server-ip-or-domain:8883)，访问SBC Web portal，默认的系统管理员名称和密码是`admin`。
 ## 1.4 卸载 PortSIP SBC
 请使用下面的步骤来卸载用于Linux的PortSIP SBC。  
 ### 卸载SBC
