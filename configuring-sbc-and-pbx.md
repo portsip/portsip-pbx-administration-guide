@@ -1,4 +1,4 @@
-# 11.2 SBC和PBX设置
+# 10.2 SBC和PBX设置
 在配置SBC和PBX的Microsoft Teams Direct Routing之前，请确认以下项目已经完成。
 + PBX已经安装并配置好了。
 + SBC已经安装并配置好。
