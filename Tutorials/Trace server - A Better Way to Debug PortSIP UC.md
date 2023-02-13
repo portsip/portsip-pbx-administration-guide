@@ -15,7 +15,7 @@ PortSIP一直在开源项目的基础上建立它的SIP Trace服务 [HOMER](http
 由于Trace服务通常会占用大量的CPU和内存资源，我们建议SIP Trace服务器的硬件规格如下：
 #### 最大100个并发通话
 - CPU：2-4核
-- 内存: 2G - 4G
+- 内存：2G - 4G
 #### 最大1,000个并发通话
 - CPU：4核
 - 内存：4G
@@ -42,7 +42,7 @@ curl https://raw.githubusercontent.com/portsip/portsip-pbx-sh/master/trace-serve
 ```
 /bin/sh trace-server.sh start
 ```
-PortSIP Trace服务器安装成功后，您可以通过以下网址访问Trace服务:
+PortSIP Trace服务安装成功后，您可以通过以下网址访问Trace服务:
 ```
 http://trace-server-ip:9080
 ```
