@@ -1,4 +1,4 @@
-# 11.1 TEAMS Office 365设置
+# 10.1 TEAMS Office 365设置
 ## 1. 安装团队模块
 + 运行以下命令以确认你是否已经成功安装了Teams PowerShell模块。`Get-Module -ListAvailable -Name MicrosoftTeams`. 如果安装成功，你会看到下面的结果:
 ![image](https://user-images.githubusercontent.com/112454775/218044094-bff5f34f-14e4-4fc1-91d4-edc44765d81c.png)
