@@ -90,7 +90,7 @@ cd /opt/portsip
 9. 登录PortSIP SBC Web Portal https://uc.portsip.cc:8883 。从菜单中选择"**设置 > PBX**"。你必须在这里设置PBX的信息，然后SBC才能和PBX进行通信。将复制的令牌粘贴到 "**PBX 访问 token** "区域，并在 "**PBX IPv4 地址** "区域输入PBX的私有IP 192.168.1.72。由于PBX的TCP传输是在5063端口创建的，所以请在 "**优先使用下面 Transport 与 PBX 通信** "中选择**TCP**，并在 "**PBX SIP 端口** "中输入 "**5063**"。
 10. 在菜单中选择 "**设置 > Transports**"。SBC需要在这里添加三种类型的传输。一个用于WebRTC客户端，一个用于Microsoft Teams，还有一个用于SBC与PBX的通信。在上述第4步完成后，打开 "自动创建默认传输 "选项，SBC将自动创建默认传输。这些默认的传输方式不建议改变。
 11. **如果你一直使用默认的传输方式，这一步就没有必要了**。如果你想创建自己的传输，你可以删除现有的传输。
-+ 添加 "**TCP** "传输，用于SBC与PBX的通信，请参考下面的截图，并在 "**网卡接口** "中选择 "**SBC私网IP**"。
++ 添加 "**TCP** "传输，用于SBC与PBX的通信，请参考下面的截图，并在 "**网卡接口** "中选择 "**SBC内网IP**"。
 + 为WebRTC客户端添加 "WSS "传输，如下图所示，"**网卡接口** "请选择 "**SBC公共IP**"。
 + 为SBC添加 "TLS "传输，以便与Microsoft Teams通信，如下图所示，请在 "**网卡接口** "中选择 "**SBC公网IP**"。
 + 为SBC添加一个 "UDP "传输，以提供正常的SIP服务，如下图所示，请选择 "**SBC公网IP** "作为 "**网卡接口**"。 
@@ -169,7 +169,7 @@ cd /opt/portsip
 + 为WebRTC客户端添加 "**WSS** "传输，如下图所示，请在 "**网卡接口** "中选择 "**SBC公网IP**"。
 + 为SBC添加 "**TLS** "传输，以便与Microsoft Teams通信，如下图所示，请在 "**网卡接口** "中选择 "**SBC公网IP**"。
 + 为SBC添加 "**UDP** "传输，以提供正常的SIP服务，如下图所示，请在 "**网卡接口** "中选择 "**SBC公网IP**"。
-+ 添加 "**TCP** "传输，让SBC与PBX通信，请参考下面的截图，在 "**网卡接口** "中选择 "**SBC私网IP**"。
++ 添加 "**TCP** "传输，让SBC与PBX通信，请参考下面的截图，在 "**网卡接口** "中选择 "**SBC内网IP**"。
 11. 在菜单中选择 "**设置 > Transports**"。SBC需要在这里添加三种类型的传输。一个用于WebRTC客户端，一个用于Microsoft Teams，还有一个用于SBC与PBX的通信。在上述第4步完成后，打开 "自动创建默认传输 "选项，SBC将自动创建默认传输。这些默认的传输方式不建议改变。
 ![image](https://user-images.githubusercontent.com/112454775/218031420-cf76bc8a-6544-4f71-bb0e-cdea1264c02c.png)
 ![image](https://user-images.githubusercontent.com/112454775/218031450-aadcab9f-ba9b-400f-b901-c49ac5e9f708.png)
