@@ -138,14 +138,6 @@ sudo firewall-cmd --reload
 ## 1.5 卸载 PortSIP PBX
 请使用下面的步骤来卸载 PortSIP PBX for Linux。
 
-**卸载SBC**
-```
-cd /opt/porsip
-/bin/sh sbc_ctl.sh stop
-/bin/sh sbc_ctl.sh rm
-cd /var/lib/portsip/
-rm -rf sbc
-```
 **卸载PBX**
 ```
 cd /opt/portsip
